@@ -11,7 +11,8 @@ pipeline {
   echo 'checking out test cases'
 dir('/users/bgurus001c/git/visetest') 
 {  
-checkout scm
+checkout scm,
+sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
 } 
  }
 }
