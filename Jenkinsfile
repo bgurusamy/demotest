@@ -40,8 +40,11 @@ sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
 }
     post
     {
-          mail to: 'Balachandar_gurusamy@cable.comcast.com',
-          subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-          body: "Something is wrong with ${env.BUILD_URL}"
+        always
+        { mail to: 'Balachandar_gurusamy@cable.comcast.com',
+          subject: $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS
+          body: $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+
+        }
     }
 }
