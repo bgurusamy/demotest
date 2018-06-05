@@ -4,7 +4,19 @@ pipeline {
        //different stages are depicted here 
      stages {
      // Stage to check out the testcases from source repb
-   
+ 
+ stage('Delete old files')
+         {
+            steps 
+             {
+                 dir('/tmp/visetest') {
+                    deleteDir()
+                     echo 'old files are deleted'
+}
+             }
+         }
+         
+         
 stage('create custom work space') 
 {
 steps
