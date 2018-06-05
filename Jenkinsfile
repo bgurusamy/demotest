@@ -8,8 +8,9 @@ pipeline {
    stage('checkout test cases')
    {
     steps{
-  echo 'checking out test cases'
-dir('/users/bgurus001c/git/visetest') 
+sh 'mkdir /users/bgurus001c/git/visetest1'  
+echo 'checking out test cases'
+dir('/users/bgurus001c/git/visetest1') 
 {  
 checkout scm
 sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
@@ -21,7 +22,7 @@ sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
    {
     steps{
   echo 'start the fitness server'
-dir('/users/bgurus001c/git/visetest')
+dir('/users/bgurus001c/git/visetest1')
 {
 sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
 }
