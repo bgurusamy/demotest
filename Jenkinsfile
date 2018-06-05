@@ -41,7 +41,7 @@ echo 'test cases are downloaded to the local folder'
    stage('Execute fitnesse')
    {
     steps{
-dir('/tmp/visetest1')
+dir('/tmp/visetest')
 {
 sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
   echo 'fitness server is started'
