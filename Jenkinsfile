@@ -43,8 +43,8 @@ sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
         always
         {
             mail to: 'Balachandar_gurusamy@cable.comcast.com',
-          subject: $PROJECT_NAME - $BUILD_NUMBER - $BUILD_STATUS
-          body: $PROJECT_NAME -$BUILD_NUMBER - $BUILD_STATUS
+          subject: "$PROJECT_NAME - $BUILD_NUMBER - $BUILD_STATUS"
+          body: "$PROJECT_NAME -$BUILD_NUMBER - $BUILD_STATUS"
 
         }
     }
