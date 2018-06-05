@@ -1,0 +1,29 @@
+!style_blue{'''Verify whether CM UI throws an error for invalid Network Latency URL.'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+     
+!style_blue{'''Login into CM UI'''}
+
+!| VDECMAPIImpl|
+|loginVdeSelenium()   |
+|Login Successful      |
+
+!style_blue{'''Verify Network Latency update'''}
+
+!| VDECMAPIImpl|
+|computeNetworkLatency()   |
+|VALIDATION ERROR: NETWORKLATENCY VALUE IS OUTSIDE THE ACCEPTABLE RANGE OF PT0S TO PT5S     |
+
+!style_blue{'''Logout CM UI'''}
+
+!| VDECMAPIImpl|
+|logoutVdeSelenium()   |
+|Logout Successful      |
+
+

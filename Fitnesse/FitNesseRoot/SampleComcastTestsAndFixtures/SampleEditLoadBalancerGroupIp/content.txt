@@ -1,0 +1,83 @@
+!style_blue{'''The Edit Load Balancer Group IP fixture allows you to modify the Load Balancer Group IP that are manually maintained in the VCP management server UI.'''}
+
+!style_blue{'''!-ConnectVCPManagementServer-!'''}
+
+!style_red{'''Input Column Descriptions'''}
+
+!style_green{'''wsdl - The wsdl end point to which the connection needs to be established'''}
+!style_green{'''version - The actual "major" bni version for wsdl against which the test needs to be performed. wsdl schemas are "version" dependent so the proper version must be used'''}
+!style_green{'''Currently supported version values are 2.4 (production version) and 3.9 (new release pending deployment to production)'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green{'''isSuccessful - turns true if the connection is successful and false otherwise'''}
+
+!style_blue{'''The Add Load Balancer Group fixture allows you to add Load Balancer Group to the VCP management server UI.'''}
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import                                    |
+|com.comcast.apps.api.bni.loadbalancergroup|
+
+!style_blue{'''2. The !-ConnectVCPManagementServer-! fixture establishes the connection with the BNI web services and returns whether the connection is successful .'''}
+
+!|ConnectVCPManagementServerForLoadBalancerGroup                                                    |
+|wsdl                                                           |connectToLoadBalancerGroupService()|
+|http://10.255.185.140:8080/topology-mgmt/loadBalancerGroup?wsdl|                                   |
+
+!style_blue{'''3. The !-AddLoadBalancerGroup-! class will add the load balancer to VCP.'''}
+
+!style_red{'''Input Column Descriptions'''}
+!style_green{'''loadbalancername'''}
+!style_green{'''membernodetype'''}
+!style_green{'''clustertype'''}
+!style_green{'''ipaddress'''}
+!style_green{'''locationname'''}
+
+!style_red {'''Output Column Descriptions'''}
+!style_green {'''!-ableToAddLoadBalancerGroup()-!'''}
+
+!|AddLoadBalancerGroup                                                                          |
+|loadbalancername|membernodetype|clustertype|ipaddress|locationname|ableToAddLoadBalancerGroup()|
+|test3           |DATA_GRID     |ACTACTHA   |127.0.0.1|global.DC   |yes                         |
+     
+!style_blue{'''4. The !-FindLoadBalancerGroup-! class will find the load balancer in VCP.'''}
+
+!style_red{'''Input Column Descriptions'''}
+!style_green{'''loadBalancerGroupName'''}
+
+!style_red {'''Output Column Descriptions'''}
+!style_green {'''!-findLBG()-!'''}
+
+!|FindLoadBalancerGroup         |
+|loadBalancerGroupName|findLBG()|
+|test3                |         |
+
+!style_blue{'''5. The !-UpdateLoadBalancerGroup-! class will update the existing load balancer in VCP.'''}
+
+!style_red{'''Input Column Descriptions'''}
+!style_green{'''existingloadbalancergroupname'''}
+!style_green{'''loadbalancername'''}
+!style_green{'''membernodetype'''}
+!style_green{'''clustertype'''}
+!style_green{'''ipaddress'''}
+!style_green{'''locationname'''}
+
+!style_red {'''Output Column Descriptions'''}
+!style_green {'''!-ableToUpdateLoadBalancerGroup()-!'''}
+
+!|UpdateLoadBalancerGroup                                                                                                        |
+|existingloadbalancergroupname|loadbalancername|membernodetype|clustertype|ipaddress|locationname|ableToUpdateLoadBalancerGroup()|
+|test3                        |test2           |DATA_GRID     |ACTACTHA   |127.0.0.1|global.DC   |yes                            |
+
+!style_blue{'''6. The !-DeleteLoadBalancerGroup-! class will delete the existing load balancer in VCP.'''}
+
+!style_red{'''Input Column Descriptions'''}
+!style_green{'''loadbalancergroupname'''}
+
+!style_red {'''Output Column Descriptions'''}
+!style_green {'''!-ableToDeleteLoadBalancerGroup()-!'''}
+
+!|DeleteLoadBalancerGroup                             |
+|loadbalancergroupname|ableToDeleteLoadBalancerGroup()|
+|test2                |yes                            |

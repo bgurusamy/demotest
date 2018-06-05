@@ -1,0 +1,84 @@
+!style_blue{'''Verify CM is able to deploy streamer from the streamer page and the home page.'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+|com.comcast.vde.cm.sel     |
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+!|VDECMImplSel    |
+|loadProperties() |
+|Properties loaded|
+
+!style_blue{'''Login into CM UI'''}
+
+!|VDECMImplSel   |
+|loginVDECm()    |
+|Login successful|
+     
+!style_blue{'''Create a Streamer'''}
+
+!|VDECMImplSel                                                     |
+|streamerCount|streamerName1|createStreamer()                      |
+|true         |Selenium-Test|Streamer has been created successfully|
+     
+!style_blue{'''Deploy a Streamer from a streamer page'''}
+
+!|VDECMImplSel                          |
+|deployStreamer()                       |
+|Streamer has been deployed successfully|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+!style_blue{'''Check Streamer status'''}
+
+!|VDECMImplSel                           |
+|streamerName1|checkRunningStatus()      |
+|Selenium-Test|Streamer status is Running|
+
+!style_blue{'''Delete a Streamer from a home page'''}
+!|VDECMImplSel                                       |
+|streamerName1|deleteStreamer()                      |
+|Selenium-Test|Streamer has been deleted successfully|
+
+!style_blue{'''Create a Streamer'''}
+
+!|VDECMImplSel                                                                    |
+|duplicate|streamerCount|streamerName1     |createStreamer()                      |
+|true     |true         |Home-Selenium-Test|Streamer has been created successfully|
+   
+!style_blue{'''Deploy a Streamer from a home page'''}
+
+!|VDECMImplSel                                             |
+|streamerName1     |deployStreamerHome()                   |
+|Home-Selenium-Test|Streamer has been deployed successfully|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+
+!style_blue{'''Delete a Streamer from a home page'''}
+!|VDECMImplSel                                            |
+|streamerName1     |deleteStreamer()                      |
+|Home-Selenium-Test|Streamer has been deleted successfully|
+
+
+!style_blue{'''Logout from CM UI'''}
+
+!|VDECMImplSel        |
+|logoutVde()          |
+|Logged out successful|
+

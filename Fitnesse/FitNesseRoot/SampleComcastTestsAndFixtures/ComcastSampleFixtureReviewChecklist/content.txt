@@ -1,0 +1,29 @@
+!2 Comcast Sample Fixture Review Checklist
+
+Copy this checklist into each wiki page user story that supports a new test fixture and mark whether each checklist item for the test passes or fails. If any 
+item(s) in the checklist are marked fail, include the reason for the failure and suggestions on how to remedy the failure. Discuss the failures in a meeting 
+between developer and reviewer and agree on the remediation action. Either the developer or reviewer can make the changes to the test - as long as they follow 
+the agreed remedy. Once all items in the checklist have passed, user stories can move from Review column to the Test Column on the Kanban Board.
+
+1. Wiki page appears under the Sample Test Section.
+
+2. Sample Titles in readable English, concise and worded in such a way to indicate what the sample text fixture is.
+
+3. Sample Title begins with the word Sample.
+
+4. No use of the words "Page" and "Fixture" in the sample title unless it cannot be avoided.
+
+5. Sample Titles use grammatical structure of verb -> object.
+
+6. Sample Titles do not use verbs bastardized into nouns - e.g. Retriver, Validator.
+
+7. Sample page begins with the word Description in 3 point font.
+
+8. Sample page contains a test description in bold blue style.
+
+9. Sample description clearly explains the purpose of the fixture (what the fixture does).
+
+10. Any fixtures used outside the specific sample fixture provide a reference to their sample fixture.
+
+
+

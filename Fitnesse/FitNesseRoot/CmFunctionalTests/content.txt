@@ -1,0 +1,8 @@
+!contents -R2 -g -p -f -h
+!***> '''Common Variables:'''
+
+!define masterNode {10.35.184.199}
+!define username {silver}
+!define password {Pr3pr0d}
+!define existingStreamer {860f1d6a-325f-4a3b-81e8-86bd53bcd498}
+*!

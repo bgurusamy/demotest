@@ -1,0 +1,140 @@
+!2 Comcast Fitnesse Test Wiki Standards
+
+This page contains the standards for writing fitnesse wiki tests. The reason why standards are in place so that all tests are written and appear unified,
+consistent, professional.
+
+!3 Organizing Tests
+
+The Comcast Fitnesse is currently divided into the following areas on the Front Page of the wiki.
+
+- Environment Health Checks
+- Cisco Tests
+- Arris Tests
+- VTW Environment
+- VTE Environment
+- Ventris Tests
+- VSRM VTS Connector Utility
+- Sample Comcast Tests and Fixtures
+
+Tests must be placed in the area in which they best fit. If there is an area where they do not fit, then a new area should be created. Each area on the Front Page is a test 
+suite. If there are new environments on which test should run, a new test environment area must be added to the suite. Refer to Environment Test Areas Using Symbolic Links
+for more information.
+
+!4 Environment Health Checks
+
+Environment Health Checks should only contain those tests that are purposed for health checks.  
+
+!4 Environment Test Areas Using Symbolic Links
+
+Since some data within tests will vary between environments such as streaming zones, peer groups, IP addresses, etc. - each environment on which tests run must have its own test area.
+Environment Test Areas use Symbolic Links to pull tests in for that environment. Refer to the How to Create Comcast Fitnesse Tests for information on creating and using 
+Symbolic Links.
+ 
+!4 Vendor Test Areas
+
+Since some data within tests will vary between vendors such as S1 profile, peer groups, etc. - each vendor against which test run must have its own test area. 
+
+!4 Comcast Application Test Areas
+
+All Comcast Applications should have their own test area.
+
+!4 Sample Tests
+
+There is a separate area where new fixture functionality can be show-cased in examples/samples so that users can get information on the fixtures that exit for fitnesse tests 
+and use copy and paste to create new tests. For more information, refer to How To Create Comcast Fitnesse Tests.
+
+!3 Naming Tests
+
+1. Test Titles must be written in readable English, be concise and worded in such a way to indicate what the test tests. Test Names should not begin with an infinitive unless
+it is a continuation of a title from a test suite.
+
+2. Test Titles must fit within the structure of the rest of the tests in the test suite. For example, if a test is a Cisco specific test - it should appear in the suite that 
+contains Cisco tests - not within the Arris test suite.
+
+3. Tests in Fitnesse within the test suites use a continuous naming standard to allow for concise organization of tests. If tests perform a similar function and can be grouped
+together and those tests can be named in such as way as to have the first part of the name (where it is the same for those test) be the name of the test suite and the 
+individual tests within that suite have unique names where those tests are different. For example:
+
+- Does Session Set Up Fail When Asset Is Expired
+- Does Session Set Up Fail When Content Is Invalid
+
+Instead of having duplication of the first part of the test name - you can create a single suite named using the part of the tests names that are common
+
+Does Session Set Up Fail When
+
+And have the tests named:
+
+Asset Is Expired
+Content Is Invalid
+
+So that the end product appears as:
+
+Does Session Set Up Fail When
+     - Asset Is Expired
+     - Content Is Invalid
+
+!3 Test Descriptions
+
+1. Word "Description+ in 3 point font at the top of every test page.
+
+2. Test page contains a test description in bold blue style.
+
+3. Test description clearly explains the purpose of the test (what the test does/tests). It also contains any other useful information that pertains to the test.
+
+4. It is recommended (not mandatory) that all tests have reference to ALM test case id.
+
+!3 Using Variables
+
+1. All variables used in the test listed in a section that is collapsible or expandable. 
+
+2. The Variable section should be titled "Variables" for consistency.
+
+3. Variables shall be used consistently throughout test (including in expected values).
+
+4. Name variables so that they are easily identify the data they represent. Do not give variables obscure names.
+
+
+!3 Test Data
+
+1. No hard coding of environment specific values (e.g. values that would be different between VTW and VTE).
+
+2. No hard coding of vendor specific values (e.g. profile which can be A28 for Arris and S25 for Cisco).
+
+3. Test must not contain any validations of time or user data that can vary from run to run causing false failures.
+
+!3 Before Running Tests in Production Regression
+
+1. Test must be 100% complete (e.g. all schemas, xml, etc. have all values listed unless otherwise called out in the test).
+
+2. Test must be functionally accurate (i.e., the test does what it says it does).
+
+3. Tests only appear once in the suite (no duplication of tests).
+
+4. Tests should be marked as "skipped" if they are being checked in and worked on prior to moving to the Test column in the Kanban Board. When tests are moved into production
+regression, they should run successfully. If they do not, then they must be fixed immediately or they must be "skipped" until they are fixed and are running successfully
+100% of the time.
+
+5. Tests should be able to be run on the machine of the test author, the test reviewer and on the QA regression environment before they can be considered DONE.
+
+!3 Test Steps
+
+1. Each test step must be separated by a line.
+
+2. All steps on page should appear in bold blue style.
+
+3. All test steps and fixture calls separated by a line.
+
+4. Test steps can be run manually based on the information in the steps.
+
+!3 Expected Results
+
+1. All expected results on page in bold red style.
+
+2. All test have expected results.
+
+!3 Test Content
+
+1. All tests must support a minimum of one test case. A single test can support multiple test cases.
+
+2. Any setup performed as part of a test should be "torn down" at the end of the test.
+

@@ -1,0 +1,45 @@
+!style_blue{'''The Validate Json fixture allows you to validate the contents of json messages returned by API calls in the web browser. This fixture can be used in tests'''}
+!style_blue{'''where you have an json response and want to check the tags, order, or values of the json or the tag attributes, parent tag or attribute values. Users can '''}
+!style_blue{'''pick and choose what they want to check.'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''URL - URL and API Call entered into the web browser'''}
+!style_green{'''tag - contains the tag section of the json that you want to validate'''}
+!style_green{'''attribute - contains a tag attribute name'''}
+!style_green{'''value - contains the attribute value'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''getConfig - message indicating the success of the parsing"'''} 
+
+!********> Variables
+!define ventrisipaddress {10.253.179.85}
+!define ventriscodetranslationfile {/etc/ventris/KoberCodeTranslations.xml}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Supply the url of the endpoint that generates the json. The output json file will be returned.'''}
+
+!|ValidateJson                                  |
+|url                             |getConfig?|
+|http://${ventrisipaddress}:8080/config|          |
+
+!style_blue{'''3. Validate JSON fixture will take the Json and parse it. Validate JSON fixture below contains a separate tag and attribute on each row and will return '''}
+!style_blue{'''the tag value. You do not have to specify every row - you can cherry pick values to check.'''}
+
+!|ValidateJson|
+|tag|attribute|value?|
+|kober|default-client-profile||
+|kober|work-stats-interval||
+|advertisement|vip-v4||
+|code-translations|file|${ventriscodetranslationfile}|
+|code-translations|reload-interval|300000000000|
+|session-cache|prime-on-startup|true|
+|session-cache|purge-interval||
+
+----

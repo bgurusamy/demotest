@@ -1,0 +1,73 @@
+!3 Description
+
+!style_blue{'''This sample fixture demonstrates how to use the Increment Count fixture that allows you to add or subtract a number from a given input.'''} 
+!style_blue{'''This is useful if you have an integer for a stored value in a database at the beginning of a test and want to specify a predicted expected output value.'''} 
+
+!********> Variables
+!define ventrishost {10.253.179.85}
+!define ventrispeergroup {65002}
+!define vcpsessionmanagerurl {http://vtwwe.g.downingtown.pa.ula.comcast.net:8080/sm}
+!define streamingzone {3408}
+*************!
+
+!style_red{'''Input Column Descriptions'''}
+
+!style_green{'''input value - original value that is stored'''}
+!style_green{'''integer - the value that you want to add or subtract - a negative value will be used for subtraction.'''}
+
+!style_red{'''Output Column Descriptions'''}
+
+!style_green{'''add - the sum of the original value plus the integer'''}
+
+----
+
+!style_blue{'''1. Import package - common to all wiki pages'''}
+
+|Import                              |
+|com.comcast.core                    |
+|com.comcast.apps.api.ventris.metrics|
+
+----
+
+!style_blue{'''2. Enter Kober Config API call http://URL:8080/metrics in web browser'''}
+
+!|GetVentrisMetrics                            |
+|url                               |getMetrics?|
+|http://${ventrishost}:8080/metrics|           |
+
+----
+
+!style_blue{'''3. Get total number of http requests made before streaming.'''}
+
+!style_red{'''Expected Results: Return total number of http request made'''}
+
+!|ValidateTotalHttpRequestsMade  |
+|handler|code|method|=value?     |
+|config   |200 |get   |configrequests|
+
+----
+
+!style_blue{'''4. Increment total number of http requests for main by 1 to validate total.'''}
+
+!style_red{'''Expected Results: Return total number of http request made + 1 '''}
+
+!|IncrementCount                          |
+|inputvalue= |integer|=add()              |
+|configrequests|1      |configrequestsexpected|
+|configrequestsexpected|-1      |configrequestsoriginal|
+
+----
+
+!style_blue{'''5. Stream Session'''}
+
+----
+
+!style_blue{'''6. Get total number of http requests made after streaming.'''}
+
+!style_red{'''Expected Results: Return total number of http request made'''}
+
+!|ValidateTotalHttpRequestsMade          |
+|handler|code|method|value?=             |
+|config   |200 |get   |configrequestsoriginal|
+
+----

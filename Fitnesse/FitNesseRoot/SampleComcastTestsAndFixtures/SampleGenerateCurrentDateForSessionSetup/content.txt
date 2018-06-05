@@ -1,0 +1,77 @@
+!style_blue{'''This fixture will return the current date time stamp in a digestible format for the session setup fixture. '''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''currentDate - Returns today's date in the desired format'''} 
+
+!style_green {'''timeClientOriginated - Returns the today's date in the timeCLientOriginated format used in session setup request ("yyyy-MM-dd'T'HH:mm:ss") '''} 
+
+!style_green {'''localTime - Returns today's date in the localTime format used in session setup request ("yyyy-MM-dd'T'HH:mm:ss'Z'")'''} 
+
+
+!********> Variables
+!define serviceName {"VOD"} 
+!define clientSessionId {"00001171b021:16FD4557"}
+!define localTime {"2015-06-05T01:27:53-53:37"}
+!define usage {"START"}
+!define hostMAC {"00001171b021"}
+!define ipAddress {"10.244.90.6"}
+!define ipPort {"1585"}
+!define profile {"A28"}
+!define existingRentalWasApplied {"N"}
+!define timeClientOriginated {"2015-06-05T05:27:53Z"}
+!define streamingZone {"3401"}
+!define QamName {3401.1606}
+!define type {"PG"}
+!define value {"65004"}
+!define idType {"ATP"}
+!define idValue {"indemand.comINTL0412000006726460"}
+!define URL {"http://10.253.206.79:80/"}
+!define ODSessionId {}
+!define sessionmanagerurl_setup {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/SetupSession}
+!define sessionmanagerurl_teardown {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/TeardownSession}
+
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+----
+
+!style_blue{'''2. Formats the current date  Date in the format digestible in the session setup xml.  '''}
+
+!|GenerateCurrentDate|
+|currentDate()|=timeClientOriginated() |=localTime()|
+||timeclientoriginated|localtime|
+
+-----
+
+!style_blue{'''3. Concatenate the timeclientoriginated and localtime obtained from the !-TimeZoneDate-! fixture, with the session in progress xml that has to be sent to the session manager. '''}
+
+!|ConcatenateString                                                                                    |
+|string1                       |string2=|string3             | string4         |=ConcatenatedString()|
+|<SetupSession xmlns="urn:com:comcast:ngsrm:s1:2010:12:03" serviceName=${serviceName} clientSessionId=${clientSessionId} localTime="|localtime|" usage=${usage}><TargetClient hostMAC=${hostMAC} ipAddress=${ipAddress} ipPort=${ipPort} profile=${profile} />|<RentalTrace existingRentalWasApplied=${existingRentalWasApplied} timeClientOriginated="|line1|
+
+!|ConcatenateString                                                                                    |
+|string1=                       |string2=|string3             | string4         |=ConcatenatedString()|
+|line1|timeclientoriginated|" /><DeviceLocation streamingZone=${streamingZone}><QamList><QamName>${QamName}</QamName></QamList><Locality type=${type} value=${value} /></DeviceLocation>|<ContentId idType=${idType} idValue=${idValue} /><SignalingURL order="1" URL=${URL} /></SetupSession>|line2|
+
+----
+
+!style_blue{'''4. Execute Session Setup by passing in the XML for the S1 Session Setup message using the !-ExecuteSessionSetup-! Fixture.'''}
+
+!|ExecuteSessionSetup                                        |
+|request=|URL                       |setupSession()|response?|
+|line2  |${sessionmanagerurl_setup}|Session Created        |0        |
+
+----
+
+!style_blue{'''5. Execute Session Teardown using the session manager url.'''}
+
+!|ExecuteSessionTearDown                                                     |
+|URL                          |teardownSession()|
+|${sessionmanagerurl_teardown}|Session Torndown|
+
+  

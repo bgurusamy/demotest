@@ -1,0 +1,31 @@
+!style_blue{'''Verify whether CM API throws an error for invalid video delay range. Verify input audio delay is configurable between 0 and 3 seconds.'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+     
+!style_blue{'''Login into CM API'''}
+
+!| VDECMAPIImpl|
+|=loginVDE()   |
+|strToken      |
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                                |
+|token=  |streamerID         |=getStreamer()   |
+|strToken|${existingStreamer}|strStreamerConfig|
+
+!style_blue{'''Validate mux config with provided param and value '''}
+
+!|VDECMAPIImpl                                                                                                                               |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?|
+|program/0/video/root_video0   |bufferDelay          |PT0S                     |strToken|strStreamerConfig|{}                  |
+
+!|VDECMAPIImpl                                                                                                                                                                                                                                                                       |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?                                                                                                                                        |
+|program/5/video/root_video0    |bufferDelay          |PT4S                     |strToken|strStreamerConfig|{"error":"validation error: iso8601 range error: program[5].video.bufferDelay value is outside the acceptable range of PT0S to PT3S"}|

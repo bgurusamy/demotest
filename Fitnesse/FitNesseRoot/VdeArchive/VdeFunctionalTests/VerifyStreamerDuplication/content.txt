@@ -1,0 +1,81 @@
+!style_blue{'''Verify whether streamer can be created and deployed by duplicating the configuration from existing Streamer'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm         |
+|com.comcast.core           |
+     
+!style_blue{'''Login into CM API'''}
+
+!| VDECMAPIImpl|
+|=loginVDE()   |
+|strToken      |
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                                                 |
+|token=  |streamerID                          |=getStreamer()   |
+|strToken|fa03e1e6-4d6a-4700-8b16-770d96b3cbb7|strStreamerConfig|
+
+!style_blue{'''Create a streamer from existting streamer config'''}
+
+!| VDECMAPIImpl                                                                        |
+|token=  |streamerName|destIPAddr  |destPort|streamerConfig=  |=createStreamer()       |
+|strToken|Odie-100    |232.36.3.118|36118   |strStreamerConfig|strCreatedStreamerConfig|
+
+!style_blue{'''Deploy the created streamer'''}
+
+!| VDECMAPIImpl                                     |
+|token=  |streamerConfig=         |=deployStreamer()|
+|strToken|strCreatedStreamerConfig|streamerID       |
+
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+!style_blue{'''Login into Master Node'''}
+
+!|RunCommand                              |
+|host         |username|password|connect? |
+|10.35.184.178|silver  |Pr3pr0d |connected|
+
+
+!style_blue{'''Retrieve all the PODs with Running Status, Ready 2/2 and Restart count 0'''}
+
+!|RunCommand                                                                                                                           |
+|command                                                                                                                     |=output()|
+|echo Pr3r00t !-|-! su -c "kubectl get pods -o wide !-|-! grep Running !-|-! grep 2/2" root !-|-! awk '{ if($4==0) print $0}'|podOutput|
+
+
+!style_blue{'''Verify whether pod created in available in the node'''}
+
+!|SearchString                       |
+|input=   |searchtext=|performsearch?|
+|podOutput|streamerID |Found         |
+
+!style_blue{'''Verify whether corresponding stream is created'''}
+
+!|RunCommand                                            |
+|command                                      |=output()|
+|echo Pr3r00t !-|-! su -c "kubectl get stream"|streamOutput|
+
+
+!style_blue{'''Verify whether pod created in available in the node'''}
+
+!|SearchString                       |
+|input=   |searchtext=|performsearch?|
+|streamOutput|streamerID |Found         |
+
+!style_blue{'''Exit the master node'''}
+
+!|RunCommand    |
+|command|output?|
+|exit   |       |
+
+

@@ -1,0 +1,72 @@
+!style_blue{'''The following fixtures allow you to perform splunk queries and evaluate query results. You run the splunk queries first and assign them'''}
+!style_blue{'''to an output variable and then use that variable as the item on which to perform searches to validate data.'''}
+
+!style_red {'''Run Splunk Query - allows to you log into splunk and perform queries'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''host- the name of the splunk host'''}
+!style_green{'''username - the splunk host user name'''}
+!style_green{'''password - the splunk host password'''}
+!style_green{'''query - the splunk query'''}
+!style_green{'''key - retrieves a specific part of the splunk query. Examples include: Body, METHOD, Request Headers, Response Status, Response. If this is blank,'''}
+!style_green{'''all values will be returned.'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green{'''=run - variable to assign splunk query to'''}
+
+!style_red {'''Search String - allows to you log into splunk and perform queries'''}
+
+!style_green {'''input- message indicating the success of the delay in format "delays for x seconds"'''} 
+!style_green{'''search text -  text to search in the splunk query results'''} 
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green{'''perform search - returns a boolean value whether the string was found or not found'''}
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+!********> Variables
+!define splunk_host {10.253.179.100}
+!define splunk_username {admin}
+!define splunk_password {Beaumaris1}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Establish connection with the Splunk server using the Run Splunk Query fixture.'''}
+
+!|RunSplunkQuery                                               |
+|host          |username          |password          |connect()|
+|${splunk_host}|${splunk_username}|${splunk_password}|connected|
+
+!style_blue{'''3. Run Splunk Query using the Run Splunk Query fixture and assign the results of the query to output1.'''}
+
+!|RunSplunkQuery                                                                                |
+|query                                                                                  |=run() |
+|search index=dsm "ValidatePlayEligibility" METHOD=POST 102216f8d7fd414e8ebe045020f59da7|output1|
+
+!style_blue{'''4. Perform search on output1 using the Search String fixture and return whether the result was found.'''}
+
+!|SearchString                                          |
+|input= |searchtext                      |performsearch?|
+|output1|102216f8d7fd414e8ebe045020f59da7|Found         |
+|output1|Comcast                         |Not Found     |
+
+!style_blue{'''5. Run Splunk Query and filter particular value.'''}
+
+!|RunSplunkQuery                                                                                         |
+|query                                                                                  |key     |=run() |
+|search index=dsm "ValidatePlayEligibility" METHOD=POST 102216f8d7fd414e8ebe045020f59da7|Response|output2|
+
+
+!style_blue{'''6. Perform search on output of Splunk Query.'''}
+
+!|SearchString                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|input= |searchtext                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |performsearch?|
+|output2|<?xml version="1.0" encoding="UTF-8"?><PlayEligibility account="9999133344143" billingID="40664" billingUnit="99991" billingVendor="DST" contentBitRate="3750113" contentPAID="indemand.comINMV0412000006726460" deviceID="000000199D4D" isSuspendable="Y" multipleStreamsAllowed="Y" newRental="N" price="2.99" rentalExpiration="2016-03-11T12:52:30Z" STBSerialNumber="XT1678669" tricksDisabled="" resumePoint="0"><Rating authority="MPAA" rating="R"/></PlayEligibility>|Found         |
+

@@ -1,0 +1,50 @@
+!style_blue{'''The Pause fixture pauses the execution of tests until someone manually intervenes to resume the test execution.'''}
+!style_blue{'''When the Pause fixture is executed, a pop-up window opens containing a resume button. The person executing the test'''}
+!style_blue{'''can go perform manual tasks that either are not automated yet or cannot be automated and when finished performing those'''}
+!style_blue{'''click resume to continue Fitnesse Test execution.'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''time - amount of time in seconds to delay before executing next fixture'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''delay - message indicating the success of the delay in format "delays for x seconds"'''} 
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+!style_blue{'''Variables:'''}
+
+!define host {10.255.185.174}
+!define username {root}
+!define password {c0mcast!}
+!define BAR {!-|-!}
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Log into machine by using the Run Command Fixture.'''}
+
+!style_red{'''host - contains the IP address of the host onto which you want to log in'''}
+!style_red{'''username - contains the user name under which you are logging in'''}
+!style_red{'''password - contains the password for the user name under which you are logging in'''}
+!style_red{'''connect - verifies that the user is logged in. Expected value should be set to connected'''}
+
+!|RunCommand                              |
+|host   |username   |password   |connect? |
+|${host}|${username}|${password}|connected|
+
+!style_blue{'''3. Pause fixture executes and opens pop-window with Resume button - click Resume button to continue test execution.'''}
+
+!|Pause   |
+|pause()  |
+|completed|
+
+!style_blue{'''4. Executes the Run Command fixture to continue the sample test execution.'''}
+
+!|RunCommand                                                                                               |
+|command                                                                         |timeoutinseconds|output()|
+|tail -f /opt/cisco/usrm/EventLog/22Jul2015_000000.txt ${BAR} grep 10.253.255.243|10              |        |
+

@@ -1,0 +1,104 @@
+!style_blue{'''This sample wiki demonstrates the use of selenium in the Tectonic application. It will allow you to script the button clicks and data entry'''}
+!style_blue{'''on the Tectonic UI. Currently the following actions are supported but more actions will be added in the future. When the test executes'''}
+!style_blue{'''it will open the Chrome browser and perform the application actions and then close the browser.'''}
+
+!style_blue{'''!-AccessTectonicUrl-! - used to access the Tectonic application in the browser'''}
+!style_blue{'''!-LoginToTectonic-! - used to log into the Tectonic application'''}
+!style_blue{'''!-VerifyVideoController-! - used to verify information for Controller in Tectonic'''}
+!style_blue{'''!-EditVideoController-! - used to edit information for Controller in Tectonic'''}
+
+!4 Access Tectonic Url
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''url - url of tectonic'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''!-IsPageLoaded()-! - verifies page is loaded in the browser'''}
+
+!4 Log Into Tectonic
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''username - NT login user name'''}
+!style_green {'''password - NT login password'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''!-IsLoginSuccessful()-! - verifies user logged in and in the Tectonic application'''}
+
+!4 Verify Video Controller
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''selectController - id of the controller in Tectonic'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''!-ERMAddress()-! - VIP of the VSRM'''}
+
+!4 Edit Video Controller
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''selectController - id of the controller in Tectonic'''}
+!style_green {'''ermaddress - VIP of the VSRM that you want to assign to the video controller'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''!-ClickUpdateVideoButton()-! - Indicates whether the update video button was selected'''}
+
+!4 Logout Of Tectonic
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''!-isLogoutSuccessful()-! - Indicates whether browser closed'''}
+
+!1 !style_red{'''Please complete installation of chrome driver in order to run the Tectonic tests successfully. If the instructions are not followed, the test will fail.'''}
+!1 !style_red{'''Installation details for chrome driver:  ChromeDriverInstallationAndSetup'''}
+
+!style_red {'''Note: The below selenium jar needs to be included for all the pages that needs to be executed through selenium'''}
+
+!path selenium-server-standalone-2.48.2.jar
+
+!style_blue{'''1. Import package - common to all wiki pages which are application specific'''}.
+
+!|Import                             |
+|com.comcast.apps.seleniumui.tectonic|
+
+!style_blue{'''2. Open up the Tectonic URL and verify whether the page gets rendered'''}.
+
+!|AccessTectonicUrl                            |
+|url                            |IsPageLoaded()|
+|http://tectonic.ula.comcast.net|true          |
+
+!style_blue{'''3. Login to Tectonic URL with user name and password and verify whether the login is successful'''}.
+
+!|LoginToTectonic                       |
+|username|password  |IsLoginSuccessful()|
+|snair02c|Comcast999|yes                |
+
+!style_blue{'''4. Verify the existing ERMAddress in the Tectnoic'''}.
+
+!|VerifyVideoController       |
+|selectController|ERMAddress()|
+|1968            |            |
+
+!style_blue{'''5. Modify the VSRM ERM address of a specific Video controller and verify whether the value is successfully changed '''}.
+
+!|EditVideoController                                |
+|selectController|ermaddress|ClickUpdateVideoButton()|
+|1968            |127.0.0.1 |yes                     |
+
+!style_blue{'''6. Verify whether the ERM Address is successfully changed in Tectonic UI '''}.
+
+!|VerifyVideoController       |
+|selectController|ERMAddress()|
+|1968            |127.0.0.1   |
+
+!style_blue{'''7. Logout and close Tectonic and verify if it is successful '''}.
+
+!|LogoutOfTectonic   |
+|isLogoutSuccessful()|
+|yes                 |

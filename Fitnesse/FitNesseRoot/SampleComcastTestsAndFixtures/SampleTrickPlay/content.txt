@@ -1,0 +1,66 @@
+!style_blue{'''The Trick Play fixture allows you to create RTSP messages for trick play for tests.'''}
+
+!style_red{'''Input Column Descriptions'''}
+
+!style_green{'''npt - the play time of current action. now indicates current playing time, any value other than now specifies playback will begin from that specified point of time'''}
+!style_green{'''Scale - specifies the play scale of action. 1=normal play, fast forward would be positive number, rewind would be negative number'''}
+!style_green{'''Action - Play for play, pause for pause, jump for jump.'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''response - provides the RTSP response code"'''} 
+
+!********> Variables
+!define serviceName {"VOD"} 
+!define clientSessionId {"00001171b021:16FD4557"}
+!define localTime {"2015-06-05T01:27:53-53:37"}
+!define usage {"START"}
+!define hostMAC {"00001171b021"}
+!define ipAddress {"10.244.90.6"}
+!define ipPort {"1585"}
+!define profile {"A28"}
+!define existingRentalWasApplied {"N"}
+!define timeClientOriginated {"2015-06-05T05:27:53Z"}
+!define streamingZone {"3401"}
+!define QamName {3401.1606}
+!define localityType {"PG"}
+!define localityValue {"65004"}
+!define contentType {"ATP"}
+!define contentValue {"indemand.comINTL0412000006726460"}
+!define URL {"http://10.253.206.79:80/"}
+!define ODSessionId {}
+!define sessionmanagerurl_setup {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/SetupSession}
+!define sessionmanagerurl_teardown {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/TeardownSession}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+     
+!style_blue{'''2. Set up session using the Execute Session Setup fixture.'''}
+
+!|ExecuteSessionSetup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|request                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |URL                       |setupSession() |response?|
+|<SetupSession xmlns="urn:com:comcast:ngsrm:s1:2010:12:03" serviceName=${serviceName} clientSessionId=${clientSessionId} localTime=${localTime} usage=${usage}><TargetClient hostMAC=${hostMAC} ipAddress=${ipAddress} ipPort=${ipPort} profile=${profile} /><RentalTrace existingRentalWasApplied=${existingRentalWasApplied} timeClientOriginated=${timeClientOriginated} /><DeviceLocation streamingZone=${streamingZone}><QamList><QamName>${QamName}</QamName></QamList><Locality type=${localityType} value=${localityValue} /></DeviceLocation><ContentId idType=${contentType} idValue=${contentValue} /><SignalingURL order="1" URL=${URL} /></SetupSession>|${sessionmanagerurl_setup}|Session Created|0        |
+
+!style_blue{'''3. Perform trick plays. Each row below will execute a specific trick play one after the other.'''}
+
+!|PerformTrickPlay               |
+|npt|Scale|action|response?      |
+|now|1    |Play  |RTSP/1.0 200 OK|
+|now|2    |Play  |RTSP/1.0 200 OK|
+|now|1    |Pause |RTSP/1.0 200 OK|
+|2  |1    |Jump  |RTSP/1.0 200 OK|
+
+!style_blue{'''4. Wait 5 seconds after performing trickplays using the Add Delay fixture.'''}
+
+!|AddDelay|
+|time|delay?|
+|5|delayed for 5 seconds|
+
+!style_blue{'''5. Perform session teardown using the Execute Session Tear Down fixture'''}
+
+!|ExecuteSessionTearDown                        |
+|URL                          |teardownSession()|
+|${sessionmanagerurl_teardown}|Session Torndown |

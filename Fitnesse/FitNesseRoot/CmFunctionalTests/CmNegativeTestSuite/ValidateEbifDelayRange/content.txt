@@ -1,0 +1,35 @@
+!style_blue{'''Verify whether CM API throws an error for invalid EBIF Delay range. Verify ebif delay for fixed timingMode is configurable between 0 to 20 seconds'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+     
+!style_blue{'''Login into CM API'''}
+
+!| VDECMAPIImpl|
+|=loginVDE()   |
+|strToken      |
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                                |
+|token=  |streamerID         |=getStreamer()   |
+|strToken|${existingStreamer}|strStreamerConfig|
+
+!style_blue{'''Validate mux config with provided param and value '''}
+
+!|VDECMAPIImpl                                                                                                                               |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?|
+|program/0/ebif     |delay                |PT0S                     |strToken|strStreamerConfig|{}                  |
+
+!|VDECMAPIImpl                                                                                                                                                                                                                                                                       |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?                                                                                                                                        |
+|program/5/ebif     |delay                |PT21S                    |strToken|strStreamerConfig|{"error":"validation error: iso8601 range error: program[5].ebif.delay value is outside the acceptable range of PT0S to PT20S"}|
+
+!|VDECMAPIImpl                                                                                                                               |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?|
+|program/5/ebif     |delay                |PT20S                    |strToken|strStreamerConfig|{}                  |

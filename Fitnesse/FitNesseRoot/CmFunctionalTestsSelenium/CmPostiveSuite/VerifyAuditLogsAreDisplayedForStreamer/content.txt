@@ -1,0 +1,66 @@
+!style_blue{'''Verify Audit Logs Are Displayed for the streamer.'''}
+ 
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+|com.comcast.vde.cm.sel     |
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+!|VDECMImplSel    |
+|loadProperties() |
+|Properties loaded|
+     
+!style_blue{'''Login into CM UI'''}
+
+!|VDECMImplSel   |
+|loginVDECm()    |
+|Login successful|
+     
+!style_blue{'''Create a Streamer'''}
+
+!|VDECMImplSel                                                            |
+|streamerCount|streamerName1       |createStreamer()                      |
+|true         |Selenium-232.36.3.34|Streamer has been created successfully|
+     
+!style_blue{'''Deploy a Streamer from a home page'''}
+
+!|VDECMImplSel                                               |
+|streamerName1       |deployStreamerHome()                   |
+|Selenium-232.36.3.34|Streamer has been deployed successfully|
+
+!style_blue{'''Adding 20 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|20  |delayed for 20 seconds|
+
+!style_blue{'''Check Streamer status'''}
+
+!|VDECMImplSel                                  |
+|streamerName1       |checkRunningStatus()      |
+|Selenium-232.36.3.34|Streamer status is Running|
+
+!style_blue{'''Check Audit Logs'''}
+
+!|VDECMImplSel                                                            |
+|streamerName1       |auditLogs()|auditCheck()                            |
+|Selenium-232.36.3.34|           |Audit logs for the streamer is displayed|
+
+!style_blue{'''Delete a Streamer from a home page'''}
+
+!|VDECMImplSel                                       |
+|streamerName1|deleteStreamer()                      |
+|Selenium-Test|Streamer has been deleted successfully|
+
+!style_blue{'''Logout from CM UI'''}
+
+!|VDECMImplSel        |
+|logoutVde()          |
+|Logged out successful|
+

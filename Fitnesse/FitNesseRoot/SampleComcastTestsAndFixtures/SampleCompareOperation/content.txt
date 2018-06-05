@@ -1,0 +1,95 @@
+!style_blue{'''The Compare Operation Fixture will compare two numbers. 
+These two numbers can be given as input or taken as a parameter from a different fixtures. 
+'''}
+
+!style_red{''' Input Parameters'''}
+!style_green{''' value 1
+
+operation:
+greater than
+less than
+greater than equal to
+less than equal to
+equal to
+not equal to
+
+value 2
+'''}
+
+!style_red{''' Output Parameters'''}
+!style_green{'''comparison response:
+
+the values are "yes" or "no"
+'''}
+
+!style_blue{'''1. Importing the core package'''}
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Numerical Comparison Fixture will be called and the inputs will be sent to the Fixture. '''}
+
+!style_red{''' the below table is performing "greater than action". If read from left to right, it goes as follows:
+5 is greater than 4. 
+If this is true, the response will be true and test is passed. If the case is false, the test response is false and test will fail.
+'''}
+
+!|CompareValues                                   |
+|value 1|operation   |value 2|comparison response?|
+|5      |greater than|4      |yes                 |
+
+!style_blue{'''3. Numerical Comparison Fixture will be called and the inputs will be sent to the Fixture. '''}
+
+!style_red{''' the below table is performing "less than action". If read from left to right, it goes as follows:
+5 is less than 6. 
+If this is true, the response will be true and test is passed. If the case is false, the test response is false and test will fail.
+'''}
+
+!|CompareValues                                |
+|value 1|operation|value 2|comparison response?|
+|5      |less than|6      |yes                 |
+
+!style_blue{'''4. Numerical Comparison Fixture will be called and the inputs will be sent to the Fixture. '''}
+
+!style_red{''' the below table is performing "greater than equal to action". If read from left to right, it goes as follows:
+5 is greater than equal to 4. 
+If this is true, the response will be true and test is passed. If the case is false, the test response is false and test will fail.
+'''}
+
+!|CompareValues                                            |
+|value 1|operation            |value 2|comparison response?|
+|5      |greater than equal to|4      |yes                 |
+
+!style_blue{'''5. Numerical Comparison Fixture will be called and the inputs will be sent to the Fixture. '''}
+
+!style_red{''' the below table is performing "less than equal to action". If read from left to right, it goes as follows:
+5 is less than equal to 6. 
+If this is true, the response will be true and test is passed. If the case is false, the test response is false and test will fail.
+'''}
+
+!|CompareValues                                         |
+|value 1|operation         |value 2|comparison response?|
+|5      |less than equal to|6      |yes                 |
+
+
+!style_blue{'''6. Numerical Comparison Fixture will be called and the inputs will be sent to the Fixture. '''}
+
+!style_red{''' the below table is performing "equal to action". If read from left to right, it goes as follows:
+5 is equal to 5. 
+If this is true, the response will be true and test is passed. If the case is false, the test response is false and test will fail.
+'''}
+
+!|CompareValues                                |
+|value 1|operation|value 2|comparison response?|
+|5      |equal to |5      |yes                 |
+
+!style_blue{'''7. Numerical Comparison Fixture will be called and the inputs will be sent to the Fixture. '''}
+
+!style_red{''' the below table is performing "not equal to action". If read from left to right, it goes as follows:
+5 is not equal to 4. 
+If this is true, the response will be true and test is passed. If the case is false, the test response is false and test will fail.
+'''}
+
+!|CompareValues                                   |
+|value 1|operation   |value 2|comparison response?|
+|5      |not equal to|4      |yes                 |

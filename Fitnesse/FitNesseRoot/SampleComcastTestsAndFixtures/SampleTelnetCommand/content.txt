@@ -1,0 +1,77 @@
+!style_blue{'''This sample wiki shows you how to incorporate telnet commands in your test using the Run Command Fixture. It will stop and start the Evans service in wpmon.'''}
+!style_blue{'''In order to get to wpmon, you have to execute telnet 0 2003 on the command line.'''}
+
+!style_blue{'''The command format:'''}
+
+!style_blue{'''{ echo COMMAND1; sleep 5; echo COMMAND2; } | telnet IP PORT'''}
+
+!style_blue{'''Ex:'''}
+!style_blue{'''{ echo stop_job evans; sleep 5; echo exit; } | telnet 0 2003'''}
+
+!style_blue{'''You can give any number of commands but remember to add sleep in between the commands.'''}
+
+
+!********> Variables
+!define host {10.253.179.86}
+!define username {root}
+!define password {c0mcast!}
+!define BAR {!-|-!}
+*************!
+
+----
+
+!style_blue{'''1. Import package - common to all wiki pages'''}
+
+|Import          |
+|com.comcast.core|
+
+----
+
+!style_blue{'''2. Connect to Ventris VM using the Run Command Fixgture.'''}
+
+!|RunCommand                              |
+|host   |username   |password   |connect? |
+|${host}|${username}|${password}|connected|
+ 
+----
+
+!style_blue{'''3. Change from root to ventris_user  and run the telnet command to stop the evans job in wpmon using the Run Command fixture.'''}
+
+!|RunCommand              |
+|command          |output?|
+|sudo ventris_user|       |
+| { echo stop_job evans; sleep 5; echo exit; } ${BAR} telnet 0 2003 ||
+
+#| su ventris_user -c " { echo stop_job evans; sleep 5; echo exit; } ${BAR} telnet 0 2003 " ||
+#|sudo ventris_user|       |
+
+!style_red{'''Expected Results: Evans process should not be running. No results for /usr/bin/evans --cfg-file /etc/ventris/evans.cfg should be returned.'''}
+
+!|RunCommand                                                 |
+|command                                      |=output?      |
+|ps -aef ${BAR} grep evans ${BAR} grep ventris|isevansrunning|
+
+!|SearchString                                                                 |
+|input=        |searchtext                                      |performsearch?|
+|isevansrunning|/usr/bin/evans --cfg-file /etc/ventris/evans.cfg|Not Found     |
+
+!style_blue{'''4. Change from root to ventris_user  and run the telnet command to start the evans job in wpmon using the Run Command fixture.'''}
+
+
+!|RunCommand              |
+|command          |output?|
+|sudo ventris_user|       |
+| { echo start_job evans; sleep 5; echo exit; } ${BAR} telnet 0 2003 ||
+
+#| su ventris_user -c " { echo start_job evans; sleep 5; echo exit; } ${BAR} telnet 0 2003 " ||
+
+!style_red{'''Expected Results: Evans process runs. Results for /usr/bin/evans --cfg-file /etc/ventris/evans.cfg should be returned.'''}
+
+!|RunCommand                                                 |
+|command                                      |=output?      |
+|ps -aef ${BAR} grep evans ${BAR} grep ventris|isevansrunning|
+
+!|SearchString                                                                 |
+|input=        |searchtext                                      |performsearch?|
+|isevansrunning|/usr/bin/evans --cfg-file /etc/ventris/evans.cfg|Found         |
+

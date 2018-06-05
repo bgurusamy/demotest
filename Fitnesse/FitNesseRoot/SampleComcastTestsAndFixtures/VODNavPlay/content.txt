@@ -1,0 +1,71 @@
+!style_blue{'''The VOD Navigation and Play Fixture Sample'''}
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''Mac  - Settop Mac Address'''}
+
+!style_green {'''Host - VOD Host name or IP'''}
+
+!style_green {'''Base Folder - Starting Folder'''}
+
+!style_green {'''Goto Page - Target screen to navigate to from the value specified in Base Folder'''}
+
+!style_green {'''Select Item - Item to be selected from the target screen'''}
+
+
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''Show_Screen - target screen presentation as a result of the navigation based on the given inputs'''} 
+
+!style_green {'''show selected - Item Selected'''} 
+
+!style_green {'''video info - detailed info on the selected video to be returned'''} 
+
+
+
+!style_blue{'''1. Include dbfit-lib to  path. This must be first library in references else other subsequent tests that use dbfit will fail.'''}
+
+!style_blue{'''2. Import package - common to all wiki pages.'''}.
+
+!path dbfit-lib/*.jar
+
+|Import          |
+|com.comcast.core|
+
+
+!style_blue{'''3. VOD Nav Play Fixture Sample Run'''}
+
+!|vod_nav_play                                                                                       |
+|STBMac      |Ventris       |base_folder|goto_page|select_item|show_screen?|showselected?            |
+|0023EEF13C57|96.119.179.156|0          |2        |3          |            |                         |
+|0023EEF13C57|96.119.179.156|08000725   |1        |3          |            |Daddy's Home <0x0811f464>|
+|0023EEF13C57|96.119.179.156|080e758e   |1        |3          |            |                         |
+
+
+!style_blue{'''4. VOD Nav Play Fixture Sample Run - 2'''}
+
+!|vod_nav_play                                                             |
+|STBMac      |Ventris       |base_folder|goto_page|select_item|video_info?||
+|0023EEF13C57|96.119.179.156|2074663a   |1        |1          |           ||
+|0023EEF13C57|96.119.179.156|14c24b08   |1        |1          |           ||
+|0023EEF13C57|96.119.179.156|0811f464   |1        |1          |           ||
+
+
+
+!style_blue{'''5. VOD Nav Play Fixture Sample Run - 3'''}
+
+!|vod_nav_play                                                                                           |
+|STBMac      |Ventris                     |base_folder|goto_page|select_item|show_screen?|=showselected()|
+|0023EEF13C57|ven-3421-asa.sys.comcast.net|0          |2        |3          |            |selected       |
+|0023EEF13C57|ven-3421-asa.sys.comcast.net|08001974   |1        |4          |            |selected2      |
+|0023EEF13C57|ven-3421-asa.sys.comcast.net|080CD9EE   |1        |5          |            |               |
+|0023EEF13C57|96.119.179.156              |08100623   |1        |5          |            |               |
+
+
+!style_blue{'''6. VOD Nav Play Fixture Sample Run - 4'''}
+
+!|vod_nav_play                                                                                            |
+|STBMac      |Ventris                     |base_folder=|goto_page|select_item|show_screen?|=showselected()|
+|0023EEF13C57|ven-3421-asa.sys.comcast.net|selected    |1        |1          |            |selected3      |
+|0023EEF13C57|ven-3421-asa.sys.comcast.net|selected3   |1        |4          |            |               |
+

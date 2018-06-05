@@ -1,0 +1,3 @@
+!style_blue{'''This Front Page contains examples of Fitnesse wikis and  the various fixtures that we currently support. Please use this as a starting point for creating tests.'''}
+
+!contents -R2 -g -p -f -h

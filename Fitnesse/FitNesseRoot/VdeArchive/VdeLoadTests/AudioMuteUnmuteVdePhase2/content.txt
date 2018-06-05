@@ -1,0 +1,40 @@
+!style_blue{'''The Run Command fixture allows you to log into linux environments and run linux commands.'''}
+!style_red {'''Input Column Descriptions'''}
+!style_green{'''host - contains the IP address or FQDN of Linux Instance'''}
+!style_green{'''username - contains the username used to log into linux'''}
+!style_green{'''password - contains the password used to log into linux'''}
+!style_green{'''command - contains the string of linux commands entered at the command prompt'''}
+!style_green{'''key - contains specific value to return (e.g. Response)'''}
+!style_red {'''Output Column Descriptions'''}
+!style_green {'''connect - indicates whether user is logged into splunk - connected versus not connected'''}
+!style_green {'''output - contains the response from what was entered at the command line.'''}
+!***> Variables
+
+!define host {10.35.176.167}
+!define username {root}
+!define password {vde@dmin}
+!define amshow {. /opt/vde/setup; am -0 show out;}
+!define mcast {232.36.1.122}
+!define port {36122}
+!define destination {10.35.182.4}
+!define iterations {320}
+*!
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+| Import |
+| com.comcast.core |
+| com.comcast.vde |
+
+!style_blue{'''2. The Run command is first used to log into the linux host. You can either use an ip address for host or an FQDN.'''}
+!| RunCommand |
+| host | username | password | connect? |
+| ${host} | ${username} | ${password} | connected |
+
+!style_blue{'''3. The command column allows you to enter command(s) at the command prompt. Console output will be shown in the output column.'''}
+!| RunCommand |
+| command | output? |
+| cd /root/demotools; ./vde_audio_mute_10.35.182.21.sh ${destination} ${mcast} ${port} ${iterations};| |
+
+!style_blue{'''4. Exit'''}
+!| RunCommand |
+| command | output? |
+| exit | |

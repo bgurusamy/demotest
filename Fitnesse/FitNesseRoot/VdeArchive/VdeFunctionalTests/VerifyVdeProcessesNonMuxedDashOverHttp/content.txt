@@ -1,0 +1,16 @@
+!style_blue{'''The Run Command fixture allows you to log into linux environments and run linux commands.'''}
+!style_red {'''Input Column Descriptions'''}
+!style_green{'''host - contains the IP address or FQDN of Linux Instance'''}
+!style_green{'''username - contains the username used to log into linux'''}
+!style_green{'''password - contains the password used to log into linux'''}
+!style_green{'''command - contains the string of linux commands entered at the command prompt'''}
+!style_green{'''key - contains specific value to return (e.g. Response)'''}
+!style_red {'''Output Column Descriptions'''}
+!style_green {'''connect - indicates whether user is logged into splunk - connected versus not connected'''}
+!style_green {'''output - contains the response from what was entered at the command line.'''}
+!***> Variables
+
+*!
+!style_blue{'''1. We cant check the logs to check if DASH contains separate adaptation sets'''}.
+
+!style_blue{'''How to figure out if the output is muxed or non muxed?'''};

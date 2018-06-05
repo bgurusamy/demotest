@@ -1,0 +1,36 @@
+!style_blue{'''Verify correct CM version is displayed on the footer of CM UI'''}
+ 
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+|com.comcast.vde.cm.sel     |
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+!|VDECMImplSel    |
+|loadProperties() |
+|Properties loaded|
+     
+!style_blue{'''Login into CM UI'''}
+
+!|VDECMImplSel   |
+|loginVDECm()    |
+|Login successful|
+
+!style_blue{'''Verify Cm Version'''}
+
+!|VDECMImplSel   |
+|verifyVersion()    |
+|The correct Version Is displayed|
+
+
+!style_blue{'''Logout from CM UI'''}
+
+!|VDECMImplSel        |
+|logoutVde()          |
+|Logged out successful|

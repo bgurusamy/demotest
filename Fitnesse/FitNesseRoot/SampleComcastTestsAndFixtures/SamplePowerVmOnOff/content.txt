@@ -1,0 +1,94 @@
+!style_blue{'''The Power On Off Vm fixture will power a virtual machine on or off. This can be used when performing failover or destructive tests.'''}
+!style_blue{'''The fixture contains properties that will allow you to specify VM center log in credentials, the virtual machine to power on or off'''}
+!style_blue{'''and whether you want to power on or power off the VM.'''}
+
+!style_blue{'''This fixture is also used with the Is Machine Pingable fixture. Is Machine Pingable allows you to specify the Ip address of a machine'''}
+!style_blue{'''and indicates whether the machine is or is not reachable'''}
+
+!style_red {'''Power On Off Vm'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''vcenterUrl - url address of the vcenter instance that contains your virtual machine'''}
+!style_green{'''userName - the username used to log into Vcenter'''}
+!style_green{'''password- the password for the username that logs into vcenter'''}
+!style_green{'''datacenterName - the name of the host on which the virtual machine resides'''}
+!style_green{'''vmname - the name (label) of the virtual machine on the host'''}
+!style_green{'''Power On - powers on the virtual machine'''}
+!style_green{'''Power Off - powers off the virtual machine'''}
+!style_green {'''vcenterloginsuccessful - indicates that user should log into Vcenter'''} 
+!style_green {'''vcenterlogoutsuccessful - indicates that user should log out of Vcenter'''} 
+
+!style_red {'''Is Machine Pingable'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''ip - ip address of the virtual machine'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green{'''ping - indicates whether the ip should be reachable or not reachable'''}
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+!style_blue{'''Variables:'''}
+
+!define vcenter_url {10.253.179.101}
+!define username {Administrator}
+!define password {c0mcast!}
+!define datacenter_name {QAVCP_DTW}
+!define vm_name {vtwatf-dtw-3802}
+!define vm_ip {10.255.185.97}
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Use the PowerOnOffVM fixture to log into Vcenter.'''}
+
+!|PowerOnOffVM                                                 |
+|vcenterUrl    |userName   |password   |vcenterloginsuccessful?|
+|${vcenter_url}|${username}|${password}|Success                |
+
+!style_blue{'''3. Use the PowerOnOffVM fixture to power off the VM'''}
+
+!|PowerOnOffVM                          |
+|datacenterName    |vmName    |powerOff?|
+|${datacenter_name}|${vm_name}|Success  |
+
+!style_blue{'''4. Wait 60 seconds for the VM to fully power off using the Add Delay fixture.'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|60  |delayed for 60 seconds|
+
+!style_blue{'''5. Use the Is Machine Pingable fixture to determine if the machine is reachable on the network. '''}
+
+!|IsMachinePingable    |
+|ip      |ping?        |
+|${vm_ip}|not reachable|
+
+!style_blue{'''6. Use the PowerOnOffVM fixture to power on the VM'''}
+
+!|PowerOnOffVM                         |
+|datacenterName    |vmName    |powerOn?|
+|${datacenter_name}|${vm_name}|Success |
+
+!style_blue{'''7. Wait 60 seconds for the VM to fully power on using the Add Delay fixture.'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|60  |delayed for 60 seconds|
+
+!style_blue{'''8. Use the Is Machine Pingable fixture to determine if the machine is reachable on the network.'''}
+
+!|IsMachinePingable|
+|ip      |ping?    |
+|${vm_ip}|reachable|
+
+!style_blue{'''9. Use PowerOnOffVM to logout of Vcenter.'''}
+
+!|PowerOnOffVM           |
+|vcenterlogoutsuccessful?|
+|Success                 |

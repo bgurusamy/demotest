@@ -1,0 +1,56 @@
+!style_blue{'''The Edit File fixture is used to edit files on linux machines.'''}
+
+!style_red{'''Input Column Descriptions'''}
+
+!style_green{'''filename - amount of time in seconds to delay before executing next fixture'''}
+!style_green{'''findtext - original string in file that you want to replace'''}
+!style_green{'''replacetext - new string with which you want to replace the original string'''} 
+
+!style_red{'''Output Column Descriptions'''}
+
+!style_green{'''findAllAndReplaceWithInFile - success message indicating the success of replacement'''} 
+
+
+!********> Variables
+!define host {10.253.179.100}
+!define username {bnisplunk}
+!define password {password}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Log into machine by using the Run Command Fixture.'''}
+
+!style_red{'''host - contains the IP address of the host onto which you want to log in'''}
+!style_red{'''username - contains the user name under which you are logging in'''}
+!style_red{'''password - contains the password for the user name under which you are logging in'''}
+!style_red{'''connect - verifies that the user is logged in. Expected value should be set to connected'''}
+
+!|RunCommand                              |
+|host   |username   |password   |connect? |
+|${host}|${username}|${password}|connected|
+
+!style_blue{'''3. Create a file backup before editing the file contents by using the Run Command Fixture.'''}
+
+!style_red{'''command - contains the command line text that you want to execute'''}
+!style_red{'''output - column returns expected the output of the command line'''}
+
+!|RunCommand                                                            |
+|command                                                        |output?|
+|\cp /home/bnisplunk/sample2.txt /home/bnisplunk/sample2.txt.bkp|       |
+
+
+!style_blue{'''4. Edit File fixture will take the file name (which includes the file path) specified and replace a string in the file.'''} 
+
+!|EditFile                                                                         |
+|filename                   |findtext  |replacetext   |findAllAndReplaceWithInFile?|
+|/home/bnisplunk/sample2.txt|setup-vsrm|setup-vsrm-vtw|Success                     |
+
+!style_blue{'''5. Return the file that was edited to its original state using the Run Command Fixture'''}
+
+!|RunCommand                                                            |
+|command                                                        |output?|
+|\mv /home/bnisplunk/sample2.txt.bkp /home/bnisplunk/sample2.txt|       |

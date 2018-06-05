@@ -1,0 +1,46 @@
+!style_blue{'''The Sample Generic fixtures shows you the different type of fixtures used by Fitnesse. The majority of the tests within the test wiki use Column Fixtures.'''}
+
+!define TEST_RUNNER {fitlibrary.suite.FitLibraryServer}
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+!|Import                     |
+|com.comcast.fitnessefixtures|
+
+!style_blue{'''2. Column fixture with inputs firstNumber secondNumber and operation. output is total.'''}
+
+!|CalculatorColumnFixture                 |
+|firstNumber|secondNumber|operation|total?|
+|5          |5           |add      |10    |
+|5          |5           |subtract |0     |
+|5          |5           |multiply |25    |
+|10         |5           |divide   |2     |
+
+----
+!style_blue{'''3. Table fixture which does the functionality based on parameters.'''}
+
+!|CalculatorTableFixture|5|3       |
+|adds                   |5|10|15|20|
+|total                  |50        |
+|subtracts              |2|25      |
+|total                  |23        |
+
+----
+!style_blue{'''4. Setup fixture to reset the values.'''}
+
+!| CalculatorSetupFixture|
+|reset                   |
+|true                    |
+
+----
+!style_blue{'''5. Do fixture which performs action based on the text provided.'''}
+
+!|CalculatorDoFixture     |
+|set goal |100            |
+|add      |5|times with|10|
+|total is|50             |
+|add      |1|times with|50|
+|total is|100            |
+|goal is met              |
+|total is|100            |
+

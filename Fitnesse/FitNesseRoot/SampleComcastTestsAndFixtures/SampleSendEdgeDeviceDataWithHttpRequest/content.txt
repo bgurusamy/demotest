@@ -1,0 +1,88 @@
+!style_blue{'''The sample shows you how to send either edge device or streaming server data into VCP from Ramsden using !-SendHttpRequest-! fixture.'''}
+
+!***> Variables
+!define man_endpoint_add {http://10.255.185.140:8080/erm/EdgeDeviceConfig}
+!define man_endpoint_del {http://10.255.185.140:8080/erm/DeleteEdgeDevice}
+!define device_name {PA.Dtown.65015.Lab.Dummy.001}
+!define edge_input_ip {10.2.2.192}
+****!
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''URL - the http url to which the request has to be sent'''}
+
+!style_green {'''body - optional body content (used if needed for post request ex: xml/json)'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''post - send http post request for the url specified  with the body(if provided) and returns response code"'''} 
+
+!style_green {'''response - to get the response body of the current request"'''} 
+
+
+!style_blue{'''1. Import package - common to all wiki pages and package specific for ramsden'''}
+
+!path dbfit-lib/*.jar
+!| dbfit.MySqlTest|
+
+|Import          |
+|com.comcast.core|
+|com.comcast.apps.api.ramsden|
+
+----
+
+!style_blue{'''2. Execute Ramsden request to send the edge device data to VCP using the !-SendHttpRequest Fixture-!.'''}
+
+!|SendHttpRequest              |
+|URL                |body|post?|response?|
+|${man_endpoint_add}/${device_name}|<EdgeDeviceConfig componentName="${device_name}" deviceStatus="OPERATIONAL" localityId="65015" modelName="NSG 9000-6G" protocolVersion="2" streamingZone="9013" xmlns="urn:com:comcast:ngsrm:d6"><ManagementURLList><ManagementURL>0.0.0.53</ManagementURL></ManagementURLList><EdgeInputList><EdgeInput edgeInputGroup="purple" edgeInputId="1" edgeInputStatus="OPERATIONAL" ipv4Address="10.2.2.192" maxBW="900000"/></EdgeInputList><QamList><Qam annex="B" channelWidth="6" frequency="573000" interleaver="I128J4" maxBW="38810" modulationMode="QAM256" qamName="9013.20001" qamStatus="OPERATIONAL" serviceGroup="100001" tsid="20001"><UdpMap><DynamicMap><DynamicRange count="63" startPort="257" startProgram="1"/></DynamicMap></UdpMap></Qam><Qam annex="B" channelWidth="6" frequency="579000" interleaver="I128J4" maxBW="38810" modulationMode="QAM256" qamName="9013.20002" qamStatus="OPERATIONAL" serviceGroup="100001" tsid="20002"><UdpMap><DynamicMap><DynamicRange count="63" startPort="257" startProgram="1"/></DynamicMap></UdpMap></Qam></QamList></EdgeDeviceConfig>|204  |         |
+
+----
+
+!style_blue{'''3. Connect to the BNI Topology Database on the VTW MAND server.'''}
+
+!| Connect|10.255.185.141:3306|user|password|Topology|
+
+----
+
+!style_blue{'''4. Confirm the Edge Device and Edge input was added to the Topology database.'''}
+
+!|Query      |SELECT DEVICE_NAME,DEVICE_TYPE_ID,DEVICE_ADDRESS FROM Topology.BASE_DEVICE where DEVICE_NAME='${device_name}'|
+|DEVICE_NAME?|DEVICE_ADDRESS?                                    |
+|${device_name}  |             0.0.0.53|
+
+!|Query      |SELECT EDGE_INPUT_IP_ADDRESS,EDGE_INPUT_GROUP_NAME ,EDI.MAX_BANDWIDTH FROM Topology.EDGE_DEVICE_INPUT EDI join EDGE_INPUT_GROUP EDIG on EDI.EDGE_INPUT_GROUP_ID =  EDIG.EDGE_INPUT_GROUP_ID where EDGE_INPUT_IP_ADDRESS='${edge_input_ip}'|
+|EDGE_INPUT_IP_ADDRESS?|EDGE_INPUT_GROUP_NAME?|                                     
+|${edge_input_ip}| purple |                          
+
+----
+
+!style_blue{'''5. Execute Ramsden request to delete the edge device data to VCP using the !-SendHttpRequest Fixture-!.'''}
+
+!|SendHttpRequest              |
+|URL                |body|post?|response?|
+|${man_endpoint_del}/${device_name}|<EdgeDeviceConfig componentName="${device_name}" deviceStatus="OPERATIONAL" localityId="65015" modelName="NSG 9000-6G" protocolVersion="2" streamingZone="9013" xmlns="urn:com:comcast:ngsrm:d6"><ManagementURLList><ManagementURL>0.0.0.53</ManagementURL></ManagementURLList><EdgeInputList><EdgeInput edgeInputGroup="purple" edgeInputId="1" edgeInputStatus="OPERATIONAL" ipv4Address="10.2.2.192" maxBW="900000"/>   </EdgeInputList><QamList><Qam annex="B" channelWidth="6" frequency="573000" interleaver="I128J4" maxBW="38810" modulationMode="QAM256" qamName="9013.20001" qamStatus="OPERATIONAL" serviceGroup="100001" tsid="20001"><UdpMap><DynamicMap><DynamicRange count="63" startPort="257" startProgram="1"/></DynamicMap></UdpMap></Qam><Qam annex="B" channelWidth="6" frequency="579000" interleaver="I128J4" maxBW="38810" modulationMode="QAM256" qamName="9013.20002" qamStatus="OPERATIONAL" serviceGroup="100001" tsid="20002"><UdpMap><DynamicMap><DynamicRange count="63" startPort="257" startProgram="1"/></DynamicMap></UdpMap></Qam></QamList></EdgeDeviceConfig>|204  |         |
+
+!|AddDelay                 |
+|time|delay?               |
+|60   |delayed for 60 seconds|
+
+----
+
+!style_blue{'''6. Execute Ramsden request to add the edge device data to VCP using the !-SendHttpRequest Fixture-!.'''}
+
+!|SendHttpRequest              |
+|URL                |body|post?|response?|
+|${man_endpoint_add}/${device_name}|<EdgeDeviceConfig componentName="${device_name}" deviceStatus="OPERATIONAL" localityId="65015" modelName="NSG 9000-6G" protocolVersion="2" streamingZone="9013" xmlns="urn:com:comcast:ngsrm:d6"><ManagementURLList><ManagementURL>0.0.0.53</ManagementURL></ManagementURLList><EdgeInputList><EdgeInput edgeInputGroup="purple" edgeInputId="1" edgeInputStatus="OPERATIONAL" ipv4Address="10.2.2.192" maxBW="900000"/></EdgeInputList><QamList><Qam annex="B" channelWidth="6" frequency="573000" interleaver="I128J4" maxBW="38810" modulationMode="QAM256" qamName="9013.20001" qamStatus="OPERATIONAL" serviceGroup="100001" tsid="20001"><UdpMap><DynamicMap><DynamicRange count="63" startPort="257" startProgram="1"/></DynamicMap></UdpMap></Qam><Qam annex="B" channelWidth="6" frequency="579000" interleaver="I128J4" maxBW="38810" modulationMode="QAM256" qamName="9013.20002" qamStatus="OPERATIONAL" serviceGroup="100001" tsid="20002"><UdpMap><DynamicMap><DynamicRange count="63" startPort="257" startProgram="1"/></DynamicMap></UdpMap></Qam></QamList></EdgeDeviceConfig>|204  |         |
+
+!| Connect|10.255.185.141:3306|user|password|Topology|
+
+!|Query      |SELECT DEVICE_NAME,DEVICE_TYPE_ID,DEVICE_ADDRESS FROM Topology.BASE_DEVICE where DEVICE_NAME='${device_name}'|
+|DEVICE_NAME?|DEVICE_ADDRESS?                                    |
+|${device_name}  |            0.0.0.53|
+
+!|Query      |SELECT EDGE_INPUT_IP_ADDRESS,EDGE_INPUT_GROUP_NAME ,EDI.MAX_BANDWIDTH FROM Topology.EDGE_DEVICE_INPUT EDI join EDGE_INPUT_GROUP EDIG on EDI.EDGE_INPUT_GROUP_ID =  EDIG.EDGE_INPUT_GROUP_ID where EDGE_INPUT_IP_ADDRESS='${edge_input_ip}'|
+|EDGE_INPUT_IP_ADDRESS?|EDGE_INPUT_GROUP_NAME?|                                     
+|${edge_input_ip}| purple |                                                                 
+
+----

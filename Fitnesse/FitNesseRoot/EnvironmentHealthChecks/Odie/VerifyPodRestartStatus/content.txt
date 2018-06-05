@@ -1,0 +1,24 @@
+!style_blue{'''Verify whether all the nodes are in ready status'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+
+!style_blue{'''Login into Master Node'''}
+
+!|RunCommand                                    |
+|host         |username   |password   |connect? |
+|${odieMasterNode}|${username}|${password}|connected|
+
+!style_blue{'''Verify all the nodes are in Ready status'''}
+
+!|RunCommand                                           |
+|command                                     |output()?|
+|echo Pr3r00t !-|-! su -c "kubectl get pods -o wide !-|-! grep  '2/2\!-|-!1/2\!-|-!0/2'" root !-|-! awk '{ if($4>0) print $0}'|blank|
+

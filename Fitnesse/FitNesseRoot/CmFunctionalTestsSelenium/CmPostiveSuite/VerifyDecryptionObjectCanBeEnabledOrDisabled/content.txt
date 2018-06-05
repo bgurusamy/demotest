@@ -1,0 +1,97 @@
+!style_blue{'''Verify decryption object can be enabled and disabled per program input.'''}
+ 
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+|com.comcast.vde.cm.sel     |
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+!|VDECMImplSel    |
+|loadProperties() |
+|Properties loaded|
+     
+!style_blue{'''Login into CM UI'''}
+
+!|VDECMImplSel   |
+|loginVDECm()    |
+|Login successful|
+     
+!style_blue{'''Create a Streamer'''}
+
+!|VDECMImplSel                                                     |
+|streamerCount|streamerName1|createStreamer()                      |
+|true         |Selenium-Test|Streamer has been created successfully|
+     
+!style_blue{'''Deploy a Streamer from a home page'''}
+
+!|VDECMImplSel                                        |
+|streamerName1|deployStreamerHome()                   |
+|Selenium-Test|Streamer has been deployed successfully|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+!style_blue{'''Check Streamer status'''}
+
+!|VDECMImplSel                           |
+|streamerName1|checkRunningStatus()      |
+|Selenium-Test|Streamer status is Running|
+
+!style_blue{'''Verify decryption object can be enabled program input'''}
+
+!|VDECMImplSel                                                                                 |
+|programObject|programObjectValue|streamerName1|programConfiguration()                         |
+|enable       |true              |Selenium-Test|decryption object has been enabled successfully|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+
+!style_blue{'''Checking streamer logs'''}
+
+!|VDECMImplSel                                                                      |
+|key                 |updateName|updateValue|checkLogsJson()                        |
+|program/0/decryption|enable    |true       |The updated streamer is present in logs|
+
+!style_blue{'''Verify decryption object can be disabled per program input'''}
+
+!|VDECMImplSel                                                                                  |
+|programObject|programObjectValue|streamerName1|programConfiguration()                          |
+|enable       |false             |Selenium-Test|decryption object has been disabled successfully|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+
+!style_blue{'''Checking streamer logs'''}
+
+!|VDECMImplSel                                                                      |
+|key                 |updateName|updateValue|checkLogsJson()                        |
+|program/0/decryption|enable    |false      |The updated streamer is present in logs|
+
+!style_blue{'''Delete a Streamer from a home page'''}
+!|VDECMImplSel                                       |
+|streamerName1|deleteStreamer()                      |
+|Selenium-Test|Streamer has been deleted successfully|
+
+!style_blue{'''Logout from CM UI'''}
+
+!|VDECMImplSel        |
+|logoutVde()          |
+|Logged out successful|
+

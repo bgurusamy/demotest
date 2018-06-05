@@ -1,0 +1,93 @@
+!style_blue{'''Verify whether Ads Break Window can be configured in the range 0 to 20 minutes'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+     
+!style_blue{'''Login into CM API'''}
+
+!| VDECMAPIImpl|
+|=loginVDE()   |
+|strToken      |
+
+!style_blue{'''create configuration of streamer'''}
+
+!| VDECMHelper                                              |
+|token=  |fileName                        |=createDataJSON()|
+|strToken|../VdeFixtures/streamer_data.txt|strStreamerConfig|
+
+!style_blue{'''Create a streamer from streamer config'''}
+
+!| VDECMAPIImpl                                     |
+|token=  |streamerConfig=  |=createStreamer()       |
+|strToken|strStreamerConfig|strCreatedStreamerConfig|
+
+!style_blue{'''Deploy the created streamer'''}
+
+!| VDECMAPIImpl                                     |
+|token=  |streamerConfig=         |=deployStreamer()|
+|strToken|strCreatedStreamerConfig|streamerID       |
+
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                        |
+|token=  |streamerID=|=getStreamer()   |
+|strToken|streamerID |strStreamerConfig|
+
+!style_blue{'''Validate mux config with provided param and value '''}
+
+!|VDECMAPIImpl                                                                                                              |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |ValidateAndUpdateMUXConfig()?|
+|program/0/ads      |adBreakWindow       |PT15M                    |strToken|strStreamerConfig|                             |
+
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                        |
+|token=  |streamerID=|=getStreamer()   |
+|strToken|streamerID |strStreamerConfig|
+
+!style_blue{'''check mux config to see if value got updated'''}
+
+!|VDECMAPIImpl                                                                                                             |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |checkMUXConfigFortheValue()?|
+|program/0/ads      |adBreakWindow       |PT15M                    |strToken|strStreamerConfig|Found                       |
+
+
+!style_blue{'''Validate mux config with provided param and value greater than 20 '''}
+
+!|VDECMAPIImpl                                                                                                                                                                                                                       |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |ValidateAndUpdateMUXConfig()?                                                                                                         |
+|program/0/ads      |adBreakWindow       |PT30M                    |strToken|strStreamerConfig|{"error":"validation error: iso8601 range error: program[0].ads.adBreakWindow value is outside the acceptable range of PT0M to PT20M"}|
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                        |
+|token=  |streamerID=|=getStreamer()   |
+|strToken|streamerID |strStreamerConfig|
+
+!style_blue{'''check mux config to see if value got updated'''}
+
+!|VDECMAPIImpl                                                                                                             |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |checkMUXConfigFortheValue()?|
+|program/0/ads      |adBreakWindow       |PT30M                    |strToken|strStreamerConfig|Not Found                   |
+
+
+!style_blue{'''Verify whether the delete streamer is successfull '''}
+
+!| VDECMAPIImpl                              |
+|token=  |streamerConfig=  |=deleteStreamer()|
+|strToken|strStreamerConfig|streamerID       |

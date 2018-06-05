@@ -1,0 +1,16 @@
+!style_blue{'''Validate Program Config'''}
+ 
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm         |
+|com.comcast.core           |
+     
+!style_blue{'''2. Execute Session Setup by passing in the XML for the S1 Session Setup message using the !-ExecuteSessionSetup-!  Fixture.'''}
+
+!|validateProgramURL|
+|=loginVDE()   |
+|strToken      |
+

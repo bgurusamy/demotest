@@ -1,0 +1,39 @@
+!style_blue{'''Verify whether CM API throws an error for invalid Output TS Rate range.Verify output tsRate can be configured in bps between 1000000 to 50000000'''}
+ 
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl         |
+|com.comcast.core           |
+     
+!style_blue{'''Login into CM API'''}
+
+!| VDECMAPIImpl|
+|=loginVDE()   |
+|strToken      |
+
+!style_blue{'''Get the configuration of existing streamer'''}
+
+!| VDECMAPIImpl                                |
+|token=  |streamerID         |=getStreamer()   |
+|strToken|${existingStreamer}|strStreamerConfig|
+
+!style_blue{'''Validate mux config with provided param and value '''}
+
+!|VDECMAPIImpl                                                                                                                                                                                                                                                                                                                  |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?                                                                                                                                                                                   |
+|scte30Server             |tcpPort               |65536                |strToken|strStreamerConfig|{"error":"validation error: validator 2.08-34.dna failed: object property 'config' validation failed: object property 'scte30Server' validation failed: object property 'tcpPort' validation failed: numeric value is greater than maximum"}|
+
+!|VDECMAPIImpl                                                                                                                                                                                                                                                                                                                   |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?                                                                                                                                                                                    |
+|scte30Server             |tcpPort               |0                   |strToken|strStreamerConfig|{"error":"validation error: validator 2.08-34.dna failed: object property 'config' validation failed: object property 'scte30Server' validation failed: object property 'tcpPort' validation failed: numeric value is less than the minimum"}|
+
+!|VDECMAPIImpl                                                                                                                               |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?|
+|scte30Server             |tcpPort               |4                 |strToken|strStreamerConfig|{"error":"validation error: validator 2.08-34.dna failed: object property 'config' validation failed: object property 'scte30Server' validation failed: object property 'tcpPort' validation failed: numeric value is less than the minimum"}|
+
+!|VDECMAPIImpl                                                                                                                               |
+|muxConfigUpdatePath|muxConfigUpdateParam|muxConfigUpdateParamValue|token=  |streamerConfig=  |validateMUXConfig()?|
+|scte30Server             |tcpPort               |1025                 |strToken|strStreamerConfig|{}|

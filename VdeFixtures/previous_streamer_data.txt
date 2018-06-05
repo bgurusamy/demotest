@@ -1,0 +1,17 @@
+name:Automate-SCOOBY-232.36.3.48
+location:MS01-Scooby
+version:2.07-08.dna
+dstAddress:232.36.3.48
+dstPort:63048
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/SPKHD_HD_NAT_16547_0_8089955797307534163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/CMDYD_HD_NAT_17354_0_5056164493401972163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/TRAVD_HD_NAT_16485_0_8987205474424984163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/FREE_HD_NAT_16692_0_6878338946670573163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/MTVHD_HD_NAT_17356_0_6758960311495311163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/NICHD_HD_NAT_16713_0_8910151615109183163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/FREE_HD_NAT_16692_0_6878338946670573163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/GOLFD_HD_NAT_16403_0_6257457287223774163/manifest.mpd
+programURL:http://ccr.dt-lsa-dai.dcurlcdn.comcast.net/TRAVD_HD_NAT_16485_0_8987205474424984163/manifest.mpd
+networkLatency:PT2S
+systemId:DT-SCOOBY-48
+sourceIp:10.144.105.101/32

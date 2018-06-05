@@ -1,0 +1,50 @@
+!style_blue{'''This sample shows you how to retrieve data from logs using other fixtures. It will tail the VSRM Event Log for 10 seconds and determine if SnmpMgrGet is present.'''}
+
+!********> Variables
+!define host {10.255.185.174}
+!define username {root}
+!define password {c0mcast!}
+!define BAR {!-|-!}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Get the current date using the Format Date fixture.'''}
+
+!|FormatDate              |
+|date |format   |=output? |
+|today|ddMMMyyyy|todaydate|
+
+!style_blue{'''3. Build the tail log command using the output from the Format Date fixture and assign to samplelogdataquery uusing the Concatenate String fixture.'''}
+
+!|ConcatenateString                                                                                       |
+|string1                       |string2= |string3                           |string4|=ConcatenatedString()|
+|tail -f /common/usrm/EventLog/|todaydate|_000000.txt ${BAR} grep SnmpMgr|Get       |samplelogdataquery   |
+
+!style_blue{'''3. Log into the VSRM VM using the Run Command fixture.'''}
+
+!|RunCommand                              |
+|host   |username   |password   |connect? |
+|${host}|${username}|${password}|connected|
+
+!style_blue{'''4. Run the tail log command using the Run Command Fixture.'''}
+
+!|RunCommand                                                                                            |
+|command=                                                                     |timeoutinseconds|=output()|
+|samplelogdataquery   |10              |         SmnpMgrGetResults|
+
+!style_blue{'''5. Perform a search on the output using the Search String fixture.'''}
+
+!|SearchString                                          |
+|input= |searchtext                      |performsearch?|
+|SmnpMgrGetResults|SnmpMgrGet                         |Found     |
+
+!style_blue{'''6. Exit'''}
+
+!|RunCommand|
+|command    |output?    |
+|exit       |           |
+

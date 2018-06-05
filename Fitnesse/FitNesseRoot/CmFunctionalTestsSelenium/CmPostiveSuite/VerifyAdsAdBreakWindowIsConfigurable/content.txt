@@ -1,0 +1,99 @@
+!style_blue{'''Verify ads adBreak Window is configurable between 0 and 20 minutes.'''}
+ 
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+|Import                     |
+|com.comcast.core.VDEutility|
+|com.comcast.vde.cm.impl    |
+|com.comcast.core           |
+|com.comcast.vde.cm.helper  |
+|com.comcast.vde.cm.model   |
+|com.comcast.vde.cm.sel     |
+
+!style_blue{'''Import package - common to all wiki pages'''}.
+
+!|VDECMImplSel    |
+|loadProperties() |
+|Properties loaded|
+     
+!style_blue{'''Login into CM UI'''}
+
+!|VDECMImplSel   |
+|loginVDECm()    |
+|Login successful|
+     
+!style_blue{'''Create a Streamer'''}
+
+!|VDECMImplSel                                                     |
+|streamerCount|streamerName1|createStreamer()                      |
+|true         |Selenium-Test|Streamer has been created successfully|
+     
+     
+!style_blue{'''Deploy a Streamer from a home page'''}
+
+!|VDECMImplSel                                             |
+|streamerName1     |deployStreamerHome()                   |
+|Selenium-Test|Streamer has been deployed successfully|
+
+!style_blue{'''Adding 20 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|20  |delayed for 20 seconds|
+
+!style_blue{'''Check Streamer status'''}
+
+!|VDECMImplSel                           |
+|streamerName1|checkRunningStatus()      |
+|Selenium-Test|Streamer status is Running|
+
+!style_blue{'''Verify ads adBreak Window is configurable between 0 and 20 minutes'''}
+
+!|VDECMImplSel                                                                                |
+|adsObject    |adsObjectValue|streamerName1|adsConfiguration()                                |
+|adBreakWindow|PT10M         |Selenium-Test|ads adBreakWindow has been configured Successfully|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+
+!style_blue{'''Checking streamer logs'''}
+
+!|VDECMImplSel                                                                  |
+|key          |updateName   |updateValue|checkLogsJson()                        |
+|program/0/ads|adBreakWindow|PT10M      |The updated streamer is present in logs|
+
+!style_blue{'''Verify ads adBreak Window is configurable between 0 and 20 minutes'''}
+
+!|VDECMImplSel                                                                                                  |
+|invalidCheck|adsObject   |adsObjectValue|streamerName1|adsConfiguration()                                    |
+|true        |adBreakWindow|PT30M          |Selenium-Test|ads adBreakWindow value is not between 0 to 20 minutes|
+
+!style_blue{'''Adding 10 second delay'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|10  |delayed for 10 seconds|
+
+
+!style_blue{'''Checking streamer logs'''}
+
+!|VDECMImplSel                                                                  |
+|key          |updateName   |updateValue|checkLogsJson()                        |
+|program/0/ads|adBreakWindow|PT10M      |The updated streamer is present in logs|
+
+
+!style_blue{'''Delete a Streamer from a home page'''}
+!|VDECMImplSel                                       |
+|streamerName1|deleteStreamer()                      |
+|Selenium-Test|Streamer has been deleted successfully|
+
+!style_blue{'''Logout from CM UI'''}
+
+!|VDECMImplSel        |
+|logoutVde()          |
+|Logged out successful|
+

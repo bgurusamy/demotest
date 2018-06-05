@@ -1,0 +1,135 @@
+!style_blue{'''The !-RunSplunkQuery-! fixture allows you to run splunk queries that contain stat counts.'''}
+!style_blue{'''Sample stat count queries included in this sample are:'''}
+!style_blue{'''- stats count by identity'''}
+!style_blue{'''- stats count by host'''}
+!style_blue{'''- stats count(Body)'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''host - contains the IP address or FQDN of Splunk Instance'''}
+!style_green{'''username - contains the username used to log into splunk'''}
+!style_green{'''password - contains the password used to log into splunk'''}
+!style_green{'''query - contains the splunk query'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''connect - indicates whether user is logged into splunk - connected versus not connected'''} 
+!style_green {'''run - contains the results from the splunk query'''} 
+!style_green {'''statsCount - contains the record count returned from the splunk query'''} 
+
+!********> Variables
+!define splunk_host {gspjsc-dtn-0201.ula.comcast.net}
+!define splunk_username {admin}
+!define splunk_password {Beaumaris1}
+!define splunk_bar {|}
+
+!define serviceName {"VOD"} 
+!define clientSessionId {"00001171b021:16FD4557"}
+!define localTime {"2015-06-05T01:27:53-53:37"}
+!define usage {"START"}
+!define hostMAC {"00001171b021"}
+!define ipAddress {"10.244.90.6"}
+!define ipPort {"1585"}
+!define profile {"A28"}
+!define existingRentalWasApplied {"N"}
+!define timeClientOriginated {"2015-06-05T05:27:53Z"}
+!define streamingZone {"3401"}
+!define QamName {3401.1606}
+!define type {"PG"}
+!define value {"65004"}
+!define idType {"ATP"}
+!define idValue {"mgm.comMGMI2010071900001202"}
+!define URL {"http://10.253.206.79:80/"}
+!define ODSessionId {}
+!define sessionmanagerurl_setup {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/SetupSession}
+!define sessionmanagerurl_teardown {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/TeardownSession}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Log into Splunk.'''}
+
+!|RunSplunkQuery                                               |
+|host          |username          |password          |connect()|
+|${splunk_host}|${splunk_username}|${splunk_password}|connected|
+
+!style_blue{'''3. Execute splunk queries for returning stats count by identify and host for placement status notification requests and acknowledgements for the past few months.'''}
+
+!|RunSplunkQuery                                                                                                                                     |
+|query                                                                                                                                 |=statsCount()|
+|search index=dsm earliest=-5mon (PlacementStatusNot* OR PlacementStatusAck*) NOT *TimingMonitor* ${splunk_bar} stats count by identity|placementcountqueryresults1             |
+
+
+!|CompareValues                                   |
+|value 1=|operation   |value 2|comparison response?|
+|placementcountqueryresults1                  |greater than|1      |yes                 |
+
+!|RunSplunkQuery                                                                                                          |
+|query                                                                                                      |=statsCount()|
+|search index=dsm earliest=-2mon ( PlacementRequest OR PlacementResponse ) ${splunk_bar} stats count by host|placementcountqueryresults2                               |
+
+
+!|CompareValues                                   |
+|value 1=|operation   |value 2|comparison response?|
+|placementcountqueryresults2                  |greater than|1      |yes                 |
+
+
+!style_blue{'''4. Execute Session Setup by passing in the XML for the S1 Session Setup message.'''}
+
+!|ExecuteSessionSetup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|request                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |URL                       |setupSession() |response?|
+|<SetupSession xmlns="urn:com:comcast:ngsrm:s1:2010:12:03" serviceName=${serviceName} clientSessionId=${clientSessionId} localTime=${localTime} usage=${usage}><TargetClient hostMAC=${hostMAC} ipAddress=${ipAddress} ipPort=${ipPort} profile=${profile} /><RentalTrace existingRentalWasApplied=${existingRentalWasApplied} timeClientOriginated=${timeClientOriginated} /><DeviceLocation streamingZone=${streamingZone}><QamList><QamName>${QamName}</QamName></QamList><Locality type=${type} value=${value} /></DeviceLocation><ContentId idType=${idType} idValue=${idValue} /><SignalingURL order="1" URL=${URL} /></SetupSession>|${sessionmanagerurl_setup}|Session Created|0        |
+
+!style_blue{'''5. Play session.'''}
+
+!|PerformTrickPlay               |
+|npt|Scale|action|response?      |
+|now|1    |Play  |RTSP/1.0 200 OK|
+
+!style_blue{'''6. Stream 60 seconds.'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|60  |delayed for 60 seconds|
+
+!style_blue{'''5. Execute Session Teardown using the session manager url.'''}
+
+!|ExecuteSessionTearDown                        |
+|URL                          |teardownSession()|
+|${sessionmanagerurl_teardown}|Session Torndown |
+
+!style_blue{'''6. Connect to splunk.'''}
+
+!|RunSplunkQuery                                               |
+|host          |username          |password          |connect()|
+|${splunk_host}|${splunk_username}|${splunk_password}|connected|
+
+!style_blue{'''7. Run index=dsm earliest=-5m !-EventType-!=SessionCr* ClientID=0001171b021'''}
+
+!|RunSplunkQuery                                                                                      |
+|query                                                                                  |=run()       |
+|search index=dsm earliest=-2m EventType=SessionCr* ClientID=${hostMAC} host=vcpu1srm*|sessioncreate|
+
+!style_blue{'''8. Get On Demand Session Id from !-SessionCreated-! Message.'''}
+
+!|GetOnDemandSessionId             |
+|input=       |=onDemandSessionID()|
+|sessioncreate|demandsessionid     |
+
+!style_blue{'''9. Use stats count body to retrieve the number of placement status notification messages for the current session (should be zero if there is an asset without ads)'''}
+
+!|ConcatenateString                                                                                                  |
+|string1            |string2                         |string3       |string4=       |=ConcatenatedString()           |
+|search index=dsm /s|"ValidatePlayEligibility" /s|METHOD=POST /s|demandsessionid|validateplayeligibilityevent|
+
+!|ConcatenateString                                                                                                                                     |
+|string1            |string2                                        |string3=       |string4                           |=ConcatenatedString()           |
+|search index=dsm /s|"ValidatePlayEligibility" /s METHOD=POST /s|demandsessionid|/s ${splunk_bar} stats count(Body)|validateplayeligibilityeventCount|
+
+!|RunSplunkQuery                              |
+|query=                          |statsCount()|
+|validateplayeligibilityeventCount|            |
+

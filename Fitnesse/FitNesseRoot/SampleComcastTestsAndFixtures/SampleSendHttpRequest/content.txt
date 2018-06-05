@@ -1,0 +1,40 @@
+!style_blue{'''The send HTTP request fixture sends HTTP GET/POST request to the endpoint.'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green {'''URL - the http url to which the request has to be sent'''}
+
+!style_green {'''body - optional body content (used if needed for post request ex: xml/json)'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''get - send http get request for the url specified and returns response code"'''} 
+
+!style_green {'''post - send http post request for the url specified  with the body(if provided) and returns response code"'''} 
+
+!style_green {'''response - to get the response body of the current request"'''} 
+
+
+!style_blue{'''1. Import package - common to all wiki pages.'''}.
+
+
+|Import          |
+|com.comcast.core|
+
+!style_blue{'''2. Actual send Get Http Request fixture example'''}
+
+!|SendHttpRequest        |
+|URL                |get?|
+|http://localhost:80|200 |
+
+
+!|SendHttpRequest        |
+|URL                |get?|response?|
+|http://localhost:80|200 ||
+
+!style_blue{'''2. Actual send POST Http Request fixture example'''}
+
+!|SendHttpRequest              |
+|URL                |body|post?|response?|
+|http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/SetupSession|<SetupSession xmlns="urn:com:comcast:ngsrm:s1:2010:12:03" serviceName="VOD" clientSessionId="00001171b021:16FD4557" localTime="2015-06-05T01:27:53-53:37" usage="START"><TargetClient hostMAC="00001171b021" ipAddress="10.244.90.6" ipPort="1585" profile="A28" /><RentalTrace existingRentalWasApplied="N" timeClientOriginated="2015-06-05T05:27:53Z" /><DeviceLocation streamingZone="3401"><QamList><QamName>3401.1606</QamName></QamList><Locality type="PG" value="65004" /></DeviceLocation><ContentId idType="ATP" idValue="indemand.comINTL0412000006726460" /><SignalingURL order="1" URL="http://10.253.206.79:80/" /></SetupSession>|200  ||
+

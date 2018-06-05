@@ -1,0 +1,98 @@
+!style_blue{'''The Send Session In Progress fixture allows you to send the session in progress message to the session manager to ensure that the ongoing session does not get tear down.'''}
+
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''request- The Session In Progress message which needs to be sent to the SRM'''}
+!style_green{'''URL- The address to which the session in progress message has to be posted.'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''response - response code from the SRM for the session in progress request'''}
+
+!********> Variables
+!define splunk_host {gspjsc-dtn-0201.ula.comcast.net}
+!define splunk_username {admin}
+!define splunk_password {Beaumaris1}
+!define BAR {!-|-!}
+!define serviceName {"VOD"} 
+!define clientSessionId {"00001171b021:16FD4557"}
+!define localTime {"2015-06-05T01:27:53-53:37"}
+!define usage {"START"}
+!define hostMAC {"00001171b021"}
+!define ipAddress {"10.244.90.6"}
+!define ipPort {"1585"}
+!define profile {"A28"}
+!define existingRentalWasApplied {"N"}
+!define timeClientOriginated {"2015-06-05T05:27:53Z"}
+!define streamingZone {"3401"}
+!define QamName {3401.1606}
+!define type {"PG"}
+!define value {"65004"}
+!define idType {"ATP"}
+!define idValue {"indemand.comINTL0412000006726460"}
+!define URL {"http://10.253.206.79:80/"}
+!define ODSessionId {}
+!define sessionmanagerurl_setup {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/SetupSession}
+!define sessionmanagerurl_teardown {http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/TeardownSession}
+*************!
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+     
+!style_blue{'''2. Execute Session Setup by passing in the XML for the S1 Session Setup message using the !-ExecuteSessionSetup-!  Fixture.'''}
+
+!|ExecuteSessionSetup                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|request                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |URL                       |setupSession() |response?|
+|<SetupSession xmlns="urn:com:comcast:ngsrm:s1:2010:12:03" serviceName=${serviceName} clientSessionId=${clientSessionId} localTime=${localTime} usage=${usage}><TargetClient hostMAC=${hostMAC} ipAddress=${ipAddress} ipPort=${ipPort} profile=${profile} /><RentalTrace existingRentalWasApplied=${existingRentalWasApplied} timeClientOriginated=${timeClientOriginated} /><DeviceLocation streamingZone=${streamingZone}><QamList><QamName>${QamName}</QamName></QamList><Locality type=${type} value=${value} /></DeviceLocation><ContentId idType=${idType} idValue=${idValue} /><SignalingURL order="1" URL=${URL} /></SetupSession>|${sessionmanagerurl_setup}|Session Created|0        |
+
+!style_blue{'''3. Play session.'''}
+
+!|PerformTrickPlay               |
+|npt|Scale|action|response?      |
+|now|1    |Play  |RTSP/1.0 200 OK|
+
+!style_blue{'''4. Stream 60 seconds.'''}
+
+!|AddDelay                  |
+|time|delay?                |
+|60  |delayed for 60 seconds|
+
+!style_blue{'''5. Log into Splunk using the Run Splunk Query Fixture.'''}
+
+!|RunSplunkQuery                                               |
+|host          |username          |password          |connect()|
+|${splunk_host}|${splunk_username}|${splunk_password}|connected|
+
+
+!style_blue{'''6. Run index=dsm earliest=-5m !-EventType-!=SessionCr* ClientID=000000199d4d using the Run Splunk Query Fixture.'''}
+
+!|RunSplunkQuery                                                                                     |
+|query                                                                                 |=run()       |
+|search index=dsm earliest=-70s EventType=SessionCr* ClientID=${hostMAC} host=vcpu1srm*|sessioncreate|
+
+
+!style_blue{'''7. Get On Demand Session Id from !-SessionCreated-! Message.'''}
+
+!|GetOnDemandSessionId             |
+|input=       |=onDemandSessionID()|
+|sessioncreate|odsession           |
+
+!style_blue{'''8. Concatenate the on demand session id obtained from  the !-GetOnDemandSessionId-! fixture, with the session in progress xml that has to be sent to the session manager.'''}
+
+!|ConcatenateString                                                                                                                              |
+|string1                  |string2                                                  |string3= |string4               |=ConcatenatedString()      |
+|<SessionInProgress xmlns=|"urn:com:comcast:ngsrm:s1:2010:12:03" onDemandSessionId="|odsession|"></SessionInProgress>|SessionInProgressRequestxml|
+
+!style_blue{'''9. Send Session In Progress Message and validate response.'''}
+
+!|ExecuteSessionInProgress                                                                            |
+|request=                   |URL                                                            |response?|
+|SessionInProgressRequestxml|http://vcpu1srm-dt-vip.ula.comcast.net:8080/sm/SessionInProgress|204      |
+
+!style_blue{'''10. Execute Session Teardown using the session manager url.'''}
+
+!|ExecuteSessionTearDown                        |
+|URL                          |teardownSession()|
+|${sessionmanagerurl_teardown}|Session Torndown |

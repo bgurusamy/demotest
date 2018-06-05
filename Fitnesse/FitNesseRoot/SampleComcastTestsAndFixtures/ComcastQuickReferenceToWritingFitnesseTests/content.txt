@@ -1,0 +1,53 @@
+!2 Comcast Quick Reference to Writing Fitnesse Tests
+
+This page is a quick reference on how to quickly create Fitnesse tests. For more in-depth information on fitnesse please visit these fitnesse site:
+
+http://www.fitnesse.org/FitNesse.UserGuide.FitNesseWiki
+
+http://butunclebob.com/FitNesse.UserGuide
+
+!3 Create Wiki Page
+
+Every FitNesse page has a name in so-called camel-case format, in which the first letter is upper-case, and at least one other letter in the word is upper-case. The name of this page, ComcastQuickReferenceToWritingFitnesseTests, is an example. This convention makes it truly easy to create new pages and links to those pages.
+
+When you edit an existing page and insert a new camel-case word, such as ThisHereNewPage, and then click the Save button, FitNesse interprets that to be a link to a new, as-yet-uncreated page. It indicates this to you by putting a question mark at the end of the name.
+
+If you then click on that question mark, FitNesse displays an edit frame, enabling you to put something on that new page. If you type anything at all in there and click Save, your new page is created, and the link to it is enabled on the originating page.
+
+You can also create a test wiki page by copying an existing page in the !-FitnesseRoot-! folder and placing it in a folder in which you want to have the test.
+
+!3 Edit Wiki Page
+
+On a page your want to change, hit the Edit button in the upper left. (If the button does not appear, then the page is not edit-enabled.)
+
+A new page will pop up with an edit frame containing the markup language of the current page. You specify formatting using a simple markup language. If you're not into wiki markup, switch to the rich text editor mode. Simply make your changes to the page and hit the Save button. Voila! Your changes appear on the page.
+
+Edit is very handy if you have copied an existing wiki page.
+
+!3 Copy and Paste from Other Wiki Pages
+
+To expedite test creation, you can copy and paste fixtures or groups of fixtures from http://localhost/SampleComcastTestsAndFixtures or from other existing tests in http://localhost/FrontPage. 
+
+!3 Review Wiki Page
+
+When working on a wiki page, make sure that you changed all pertinent information on the page for your test (especially if you have copied fixtures from other tests or the samples).
+
+!3 Run the Health Checks
+
+Run the http://localhost/EnvironmentHealthChecks tests prior to running your test to ensure that the environment is stable.
+
+!3 Test your page
+
+On your test page, hit the Test button to execute the test. Ensure that the test completes successfully. If the test fails, determine what the cause is and fix the test.
+
+!3 Test your page within the test suite.
+
+Run the test suite that contains your test and verify that it does adversely impact the runs of other tests.
+
+!3 Review your test page
+
+Review the test page using http://localhost/SampleComcastTestsAndFixtures.ComcastFitnesseTestReviewChecklist
+
+!3 Code Check In (VBO Test Team Only)
+
+Check in your test or test changes using SVN. Ensure that you include the user story identifier, a description of the checkin and your NT user name. For more information on SVN Check Ins, refer to the VBO Test Team Wiki.

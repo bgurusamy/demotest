@@ -1,0 +1,115 @@
+!style_blue{'''This sample shows you how to use the !-SendHttpRequest-! fixture to set Log level for VCP components (SRM, etc.) This can be used as test setup and '''}
+!style_blue{'''teardown to capture http messaging for streaming.'''}
+
+!style_blue{'''This also shows how to verify the BNI Log level settings to check whether the log level is being set to TRACE,INFO,DEBUG, or to any other settings available in BNI'''}
+
+!style_blue{'''!-SendHttpRequest-!'''}
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''URL - contains the http URL to send a request.'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''get - sends the http get request in the URL column and returns http response code'''} 
+
+!style_blue{'''!-VerifyBNILoglevelSettings-!'''}
+!style_red {'''Input Column Descriptions'''}
+
+!style_green{'''URL - contains the http URL to send a request.'''}
+
+!style_green{'''logger - the element which needs to be verified for loglevel.'''}
+
+!style_red {'''Output Column Descriptions'''}
+
+!style_green {'''level - gets back the existing log level that is being set'''} 
+!********> Variables
+!define SRM1 {10.255.185.150}
+!define SRM2 {10.255.185.151}
+!define SRM3 {10.255.185.152}
+!define SRM4 {10.255.185.153}
+!define SRM5 {10.255.185.154}
+!define SRM6 {10.255.185.155}
+!define SRM7 {10.252.61.20}
+!define SRM8 {10.252.61.21}
+!define SRM9 {10.252.61.22}
+!define SRM10 {10.252.61.23}
+!define SRM11 {10.252.61.24}
+!define SRM12 {10.252.61.25}
+*************!
+
+----
+
+!style_blue{'''1. Import package - common to all wiki pages'''}.
+
+|Import          |
+|com.comcast.core|
+|com.comcast.apps.api.bni|
+
+
+!style_blue{'''2. The following fixture will send the http request to VCP to set the net.beaumaris.common.http.HttpRequest level to trace. If successful it will return '''}
+!style_blue{'''the status code of 200.'''}
+
+!|SendHttpRequest                                                                                                       |
+|URL                                                                                                               |get?|
+|http://${SRM1}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM2}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM3}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM4}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM5}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM6}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM7}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM8}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM9}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM10}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM11}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+#|http://${SRM12}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=TRACE&submit=Change|200 |
+
+!style_blue{'''3. The following fixture will verify the log settings that is existing for a particular logger in a VCP system '''}
+
+!|VerifyBNILogLevelsettings|
+|URL                                         |logger                               |level?|
+|http://${SRM1}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|TRACE|
+|http://${SRM2}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM3}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM4}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM5}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM6}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM7}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM8}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM9}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM10}:8080/serverinfo/log-settings|net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM11}:8080/serverinfo/log-settings|net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM12}:8080/serverinfo/log-settings|net.beaumaris.common.http.HttpRequest|INFO|
+
+!|VerifyBNILogLevelsettings|
+|URL                                         |logger                               |level?|
+|http://${SRM1}:8080/serverinfo/log-settings |net.beaumaris.adm.core.ADMServiceImpl|INFO(i)|
+|http://${SRM1}:8080/serverinfo/log-settings |net.beaumaris.adm.core.ADSServiceCheckJob|INFO(i)|
+|http://${SRM2}:8080/serverinfo/log-settings |net.beaumaris.adm.core.BaseADSServiceImpl|INFO(i)|
+|http://${SRM3}:8080/serverinfo/log-settings |net.beaumaris.billing.cemp.CEMPBillingServiceProvider|INFO(i)|
+|http://${SRM4}:8080/serverinfo/log-settings |net.beaumaris.catvsm.core.EventService|INFO(i)|
+|http://${SRM5}:8080/serverinfo/log-settings |net.beaumaris.common.billing.constant.BillingServiceProviderConstant|INFO(i)|
+|http://${SRM6}:8080/serverinfo/log-settings |net.beaumaris.billing.BillingMDB|INFO(i)|
+|http://${SRM7}:8080/serverinfo/log-settings |net.beaumaris.common.http.HttpRequest|INFO|
+|http://${SRM8}:8080/serverinfo/log-settings |net.beaumaris.cachedeployer.datacenter.InitialHostsManager|INFO(i)|
+|http://${SRM11}:8080/serverinfo/log-settings|net.beaumaris.catvsm.core.UDBService|INFO(i)|
+|http://${SRM12}:8080/serverinfo/log-settings|net.beaumaris.erm.core.TopologyServiceImpl|INFO(i)|
+
+
+!style_blue{'''4. The following fixture will send the http request to VCP to set the net.beaumaris.common.http.HttpRequest level to info. If successful it will return '''}
+!style_blue{'''the status code of 200.'''}
+
+!|SendHttpRequest                                                                                                      |
+|URL                                                                                                              |get?|
+|http://${SRM1}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM2}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM3}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM4}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM5}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM6}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM7}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM8}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM9}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM10}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM11}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
+#|http://${SRM12}:8080/serverinfo/log-settings?logger=net.beaumaris.common.http.HttpRequest&level=INFO&submit=Change|200 |
