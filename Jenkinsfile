@@ -15,7 +15,7 @@ checkout scm
 } 
  }
 }
-}
+
    stage('start the fitness server')
    {
     steps{
