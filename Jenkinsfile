@@ -15,16 +15,6 @@ checkout scm
 } 
  }
 }
-   stage('prepare jar file')
-   {
-    steps{
-  echo 'preparing jar file'
-dir('/users/bgurus001c/git/visetest')
-{
- sh 'javac *.java'
-sh 'jar cvfe fitnesse-standalone.jar *.class' 
-  }
- }
 }
    stage('start the fitness server')
    {
@@ -32,7 +22,7 @@ sh 'jar cvfe fitnesse-standalone.jar *.class'
   echo 'start the fitness server'
 dir('/users/bgurus001c/git/visetest')
 {
-sh 'java -jar fitnesse-standalone.jar -p 9090'
+sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
 }
   }
 }
