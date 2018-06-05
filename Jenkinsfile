@@ -22,7 +22,7 @@ checkout scm
 dir('/users/bgurus001c/git/visetest')
 {
  sh 'javac *.java'
-sh 'jar cvfe fitnesse-standalone.jar *.class'' 
+sh 'jar cvfe fitnesse-standalone.jar *.class' 
   }
  }
 }
