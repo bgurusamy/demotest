@@ -26,7 +26,7 @@ echo 'test cases are downloaded to the local folder'
  }
 }
 
-   stage('start the fitness server')
+   stage('Execute fitnesse')
    {
     steps{
 dir('/tmp/visetest1')
@@ -36,12 +36,12 @@ sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
 }
   }
 }
-   stage('execute the  test cases')
-   {
-    steps{
-  echo 'checkout test cases'
-   checkout scm
-  }
+    
 }
-}
+    post
+    {
+          mail to: 'Balachandar_gurusamy@cable.comcast.com',
+          subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+          body: "Something is wrong with ${env.BUILD_URL}"
+    }
 }
