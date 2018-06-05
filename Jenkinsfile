@@ -14,7 +14,7 @@ echo 'checking out test cases'
 dir('/tmp/visetest1') 
 {  
 checkout scm
-sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
+//sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
 } 
  }
 }
