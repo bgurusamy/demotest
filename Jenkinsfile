@@ -42,7 +42,7 @@ sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
     {
         always
         {
-            mail to: 'Balachandar_gurusamy@cable.comcast.com',
+            mail to: 'Balachandar_gurusamy@cable.comcast.com'
  
         }
     }
