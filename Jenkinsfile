@@ -8,7 +8,7 @@ pipeline {
    stage('checkout test cases')
    {
     steps{
-sh 'chmod 777 /tmp'
+//sh 'chmod 777 /tmp'
 sh 'mkdir /tmp/visetest1'  
 echo 'checking out test cases'
 dir('/tmp/visetest1') 
