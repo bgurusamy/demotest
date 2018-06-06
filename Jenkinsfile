@@ -49,7 +49,7 @@ dir('/tmp/visetest')
 
   script{
                 withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                    sh "nohup java -jar Fitnesse/fitnesse-standalone.jar -p 9090  &"
+                    sh "java -jar Fitnesse/fitnesse-standalone.jar -p 9090  &"
                 }
             }
   echo 'fitness server is started'
