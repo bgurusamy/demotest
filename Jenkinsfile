@@ -62,7 +62,11 @@ dir('/tmp/visetest')
 }
   }
 }
-    
+     stage('send final notification') {
+            steps {
+                slackSend channel: '#visetest', color: 'good', message: "COMPLETED: '${JOB_NAME} ${BUILD_NUMBER}' ",baseUrl:'https://cim.slack.com/services/hooks/jenkins-ci/',teamDomain:'cim',token:'ldhDuSiSkvnLEeFLUPyWndJF'
+            }
+        }
 }
     post
     {
