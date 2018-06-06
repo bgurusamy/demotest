@@ -43,7 +43,7 @@ echo 'test cases are downloaded to the local folder'
     steps{
 dir('/tmp/visetest')
 {
-sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090 &'
+sh 'nohub java -jar Fitnesse/fitnesse-standalone.jar -p 9090 &'
     // timeout(5) {
     //waitUntil {
       // script {
