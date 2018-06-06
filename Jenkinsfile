@@ -41,17 +41,17 @@ echo 'test cases are downloaded to the local folder'
    stage('Execute fitnesse')
    {
     steps{
+        
+        
+        
 dir('/tmp/visetest')
 {
-sh 'nohup java -jar Fitnesse/fitnesse-standalone.jar -p 9090 &'
-    // timeout(5) {
-    //waitUntil {
-      // script {
-        // def r = sh script: 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090', returnStatus: true
-         //return (r == 0);
-       //}
-    //}
-//}
+
+  script{
+                withEnv(['BUILD_ID=dontkill']) {
+                    sh "nohup java -jar Fitnesse/fitnesse-standalone.jar -p 9090  &"
+                }
+            }
   echo 'fitness server is started'
 }
   }
