@@ -43,13 +43,26 @@ echo 'test cases are downloaded to the local folder'
     steps{
 dir('/tmp/visetest')
 {
-sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
+//sh 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090'
+     timeout(5) {
+    waitUntil {
+       script {
+         def r = sh script: 'java -jar Fitnesse/fitnesse-standalone.jar -p 9090', returnStatus: true
+         return (r == 0);
+       }
+    }
+}
   echo 'fitness server is started'
 }
   }
 }
     
 }
+    
+   
+    
+    
+    
     post
     {
         always
