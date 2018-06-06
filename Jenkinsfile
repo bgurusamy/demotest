@@ -1,16 +1,17 @@
 
 pipeline {
     agent any 
-       //different stages are depicted here 
+       //different stages are provided  below 
      stages {
-     // Stage to check out the testcases from source repb
-         
+    
+          // to send initial slack notification
        stage('send initial notification') {
             steps {
                 slackSend channel: '#visetest', color: 'good', message: "STARTED: '${JOB_NAME} ${BUILD_NUMBER}' ",baseUrl:'https://cim.slack.com/services/hooks/jenkins-ci/',teamDomain:'cim',token:'ldhDuSiSkvnLEeFLUPyWndJF'
             }
         }
- 
+           // to delete old files in the system
+
  stage('Delete old files')
          {
             steps 
@@ -22,7 +23,8 @@ pipeline {
              }
          }
          
-         
+               // to create temp work space
+    
 stage('create custom work space') 
 {
 steps
@@ -32,7 +34,7 @@ echo 'custom work space is created'
 }
 }
   
-
+ // Stage to check out the testcases from source repb
 stage('checkout test cases')
    {
     steps{
@@ -43,7 +45,8 @@ echo 'test cases are downloaded to the local folder'
 } 
  }
 }
-
+//  to execute fitnesse test cases
+         
    stage('Execute fitnesse')
    {
     steps{
@@ -62,12 +65,14 @@ dir('/tmp/visetest')
 }
   }
 }
+         //  to send  final slack notification
      stage('send final notification') {
             steps {
                 slackSend channel: '#visetest', color: 'good', message: "COMPLETED: '${JOB_NAME} ${BUILD_NUMBER}' ",baseUrl:'https://cim.slack.com/services/hooks/jenkins-ci/',teamDomain:'cim',token:'ldhDuSiSkvnLEeFLUPyWndJF'
             }
         }
 }
+    //  post actions
     post
     {
      success
