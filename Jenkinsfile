@@ -52,10 +52,7 @@ dir('/tmp/visetest')
                     sh "java -jar Fitnesse/fitnesse-standalone.jar -p 9090  &"
                 }
             }
-  echo 'fitness server is started'
-    emailext  subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], to: 'Balachandar_gurusamy@cable.comcast.com', body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-       <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>"""
-
+  
 }
   }
 }
