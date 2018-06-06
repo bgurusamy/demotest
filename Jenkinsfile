@@ -48,7 +48,7 @@ dir('/tmp/visetest')
 {
 
   script{
-                withEnv(['BUILD_ID=dontkill']) {
+                withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
                     sh "nohup java -jar Fitnesse/fitnesse-standalone.jar -p 9090  &"
                 }
             }
