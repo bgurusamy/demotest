@@ -53,6 +53,8 @@ dir('/tmp/visetest')
                 }
             }
   echo 'fitness server is started'
+    emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test', to: 'Balachandar_gurusamy@cable.comcast.com'
+
 }
   }
 }
