@@ -77,7 +77,7 @@ dir('/tmp/visetest')
         
         always {
             step([$class: 'Mailer',
-                 notifyEveryUnstableBuild: true,
+                 //notifyEveryUnstableBuild: true,
                 recipients: "Balachandar_gurusamy@cable.comcast.com",
                 sendToIndividuals: true])
         }
